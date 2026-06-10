@@ -1,0 +1,510 @@
+
+================================================================================
+WSL_ReID/sysu.sh
+================================================================================
+0001: python3 main.py --dataset sysu --debug wsl  --save-path sysu_agw --arch resnet --stage1-epoch 20 --milestone 30 70 --lr 0.0003 --device 0
+
+================================================================================
+WSL_ReID/llcm.sh
+================================================================================
+0001: python3 main.py --dataset llcm --debug wsl  --save-path llcm --arch resnet --stage1-epoch 80 --milestone 30 70 --lr 0.0003 --device 0
+
+================================================================================
+WSL_ReID/regdb.sh
+================================================================================
+0001: python3 main.py --dataset regdb --debug wsl  --save-path regdb --arch resnet --trial 1 --stage1-epoch 50 --milestone 50 70 --lr 0.00045 --device 0
+
+================================================================================
+WSL_ReID/main.py
+================================================================================
+0019:     log_path = os.path.join(args.save_path, "log/")
+0020:     model_path = os.path.join(args.save_path, "models/")
+0047:             for current_epoch in range(0, args.stage1_epoch):
+0053:                 logger('Time: {} | phase 1 epoch {}; Setting: {}'.format(time_now(), current_epoch+1, args.save_path))
+0054:                 logger(f'e_lr: {model.scheduler_phase1.get_lr()[0]}')
+0060:                 if current_epoch == args.stage1_epoch-1:
+0065:         for current_epoch in range(start_epoch, args.stage2_epoch):
+0076:                    .format(current_epoch, time_now(), args.save_path))
+0077:             logger(f'e_lr: {model.scheduler_phase2.get_lr()[0]}')
+0097:     parser.add_argument("--dataset", default="regdb", type=str, help="dataset name: sysu, llcm, regdb")
+0098:     parser.add_argument("--arch", default="resnet", type=str, help="sysu:clip-resnet, llcm:resnet, regdb:resnet")
+0099:     parser.add_argument('--mode', default='train', help='train or test')
+0101:     parser.add_argument("--data-path", default="../../VIREID_Dataset/", type=str, help="dataset path")
+0102:     parser.add_argument("--save-path", default="save/", type=str, help="log and model save path")
+0104:     parser.add_argument('--lr', default=0.0003, type=float, help='learning rate 0.0003 for sysu(s) and llcm(l), 0.00045 for regdb(r)')
+0105:     parser.add_argument('--weight-decay', default=0.0005, type=float, help='weight deacy')
+0106:     parser.add_argument('--milestones', nargs='+', type=int, default=[30, 70],
+0107:                         help='milestones for the learning rate decay, s&l:30, 70, r:50, 70')
+0108:     parser.add_argument('--relabel', default=1, type=int, help='relabel train dataset')
+0110:     parser.add_argument('--weak-weight',default=0.25, type=float, help='weight of weak loss')
+0111:     parser.add_argument('--tri-weight',default=0.25, type=float, help='weight of triplet loss')
+0112:     parser.add_argument('--img-h',default=288,type=int,help='height of the input image')
+0113:     parser.add_argument('--img-w',default=144,type=int,help='width of the input image')
+0114:     parser.add_argument("--seed", default=1, type=int, help="random seed")
+0115:     parser.add_argument('--num-workers', default=8, type=int, help='num workers')
+0116:     parser.add_argument('--batch-pidnum', default=8, type=int ,help='training pid in each batch, r:5')
+0117:     parser.add_argument('--pid-numsample',default=4, type=int ,help='num sample of each pid in a batch')
+0118:     parser.add_argument('--test-batch', default=128, type=int, metavar='tb', help='testing batch size')
+0120:     parser.add_argument('--sigma', default=0.8, type=float, help='momentum update factor')
+0121:     parser.add_argument('-T', '--temperature', default=3, type=float, help='Temperature parameter of softmax')
+0122:     parser.add_argument("--device", default=0, type=int, help="gpu")
+0123:     parser.add_argument('--stage1-epoch' ,default=20, type=int,help='s:20, l:80, r:50')
+0124:     parser.add_argument('--stage2-epoch' ,default=120, type=int,help='CMCL total epoch')
+0125:     parser.add_argument('--resume', default= 0, type = int, help='resume or not')
+0126:     parser.add_argument('--debug', default='wsl',type=str,help='wsl or sl')
+0127:     parser.add_argument('--trial', default=1,type=int,help='trial for regdb')
+0128:     parser.add_argument('--search-mode', default='all',type=str,help='all or indoor search gallery')
+0129:     parser.add_argument('--gall-mode', default='single',type=str,help='mutil or single shot')
+0130:     parser.add_argument('--test-mode', default='t2v',type=str,help='regdb and llcm test_mode')
+0131:     parser.add_argument('--model-path', default='default', type=str, help='load from checkpoint')
+0133:     args.save_path = '../saved_'+args.dataset+'_{}'.format(args.arch)+'/'+args.save_path
+0135:         args.num_classes = 395
+0137:         args.num_classes = 206
+0138:         args.save_path += f'_{args.trial}'
+0140:         args.num_classes = 713
+0142:     setproctitle.setproctitle(args.save_path)
+
+================================================================================
+WSL_ReID/models/__init__.py
+================================================================================
+0005: from .classifier import Image_Classifier
+0008: from .agw import AGW
+0009: from .clip_model import CLIP
+0010: from .optim import WarmupMultiStepLR
+0011: from .loss import TripletLoss_WRT, Weak_loss
+0013:     "resnet": AGW,  # visual encoder AGW, no text encoder
+0014:     "clip-resnet": CLIP,  # resnet50 + transformer
+0016:     #"clip-vit": CLIP,  # both vit-b/16 + transformer
+0035:         self.lr = args.lr
+0042:         self.classifier1 = Image_Classifier(args).to(self.device) # RGB classifier
+0043:         self.classifier2 = Image_Classifier(args).to(self.device) # IR classifier
+0044:         self.classifier3 = Image_Classifier(args).to(self.device) # Common classifier
+0047:         self._init_optimizer()
+0050:     def _init_optimizer(self):
+0055:         for part in (self.model, self.classifier1, self.classifier2):
+0057:                 if value.requires_grad and key.find("classifier") != -1:
+0059:                                 "lr": 2 * self.lr,
+0063:                                 "lr": self.lr,
+0066:         for key, value in self.classifier3.named_parameters():
+0069:                             "lr": 2 * self.lr,
+0071:         self.optimizer_phase1 = torch.optim.Adam(params_phase1)
+0072:         self.optimizer_phase2 = torch.optim.Adam(params_phase2)
+0073:         self.scheduler_phase1 = WarmupMultiStepLR(self.optimizer_phase1, self.milestones,
+0075:         self.scheduler_phase2 = WarmupMultiStepLR(self.optimizer_phase2, self.milestones,
+0079:         self.tri_criterion = TripletLoss_WRT()
+0080:         self.weak_criterion = Weak_loss(method='log')
+0084:         self.classifier1.train()
+0085:         self.classifier2.train()
+0086:         self.classifier3.train()
+0090:         self.classifier1.eval()
+0091:         self.classifier2.eval()
+0092:         self.classifier3.eval()
+0107:                                'classifier1': self.classifier1.state_dict(),
+0108:                                'classifier2': self.classifier2.state_dict(),
+0109:                                'classifier3': self.classifier3.state_dict()}
+0131:                     self.classifier1.load_state_dict(loaded_dict['classifier1'], strict=False)
+0132:                     self.classifier2.load_state_dict(loaded_dict['classifier2'], strict=False)
+0134:                         self.classifier3.load_state_dict(loaded_dict['classifier3'], strict=False)
+0151:             self.classifier1.load_state_dict(loaded_dict['classifier1'], strict=False)
+0152:             self.classifier2.load_state_dict(loaded_dict['classifier2'], strict=False)
+0154:                 self.classifier3.load_state_dict(loaded_dict['classifier3'], strict=False)
+
+================================================================================
+WSL_ReID/models/optim.py
+================================================================================
+0003: class WarmupMultiStepLR(torch.optim.lr_scheduler._LRScheduler):
+0004:     def __init__(self, optimizer, milestones, gamma=0.1, warmup_factor=1.0 / 3, warmup_iters=500,
+0005:                  warmup_method='linear', last_epoch=-1, mode = 'undifined'):
+0009:         if not list(milestones) == sorted(milestones):
+0011:                 "Milestones should be a list of " " increasing integers. Got {}", milestones)
+0016:         self.milestones = milestones
+0017:         self.gamma = gamma
+0021:         super(WarmupMultiStepLR, self).__init__(optimizer, last_epoch)
+0023:     def get_lr(self):
+0025:         if self.last_epoch < self.warmup_iters:
+0029:                 alpha = float(self.last_epoch) / float(self.warmup_iters)
+0034:         elif self.warmup_iters <= self.last_epoch < self.milestones[0]:
+0038:             base_lr
+0040:             * self.gamma ** bisect_right(self.milestones, self.last_epoch)
+0041:             for base_lr in self.base_lrs
+
+================================================================================
+WSL_ReID/datasets/regdb.py
+================================================================================
+0009: class RegDB:
+0012:         self.trial = args.trial
+0014:         self.path = os.path.join(args.data_path, "RegDB/")
+0016:         self.pid_numsample = args.pid_numsample # number of samples per person in each batch
+0017:         self.batch_pidnum = args.batch_pidnum # number of persons in each batch
+0018:         self.batch_size = self.pid_numsample*self.batch_pidnum # number of samples in each batch
+0019:         self.test_batch = args.test_batch # number of samples in each test batch
+0021:         self.train_rgb = RegDB_train(args, self.path,self.trial, modal ='rgb') # rgb train set
+0022:         self.train_ir = RegDB_train(args, self.path,self.trial,modal ='ir') # ir train set
+0024:         self.rgb_relabel_dict = self.train_rgb.relabel_dict
+0025:         self.ir_relabel_dict = self.train_ir.relabel_dict
+0027:         self.query = RegDB_test(args, self.path, mode ="thermal",trial = self.trial)
+0028:         self.gallery = RegDB_test(args, self.path, mode ="visible",trial = self.trial)
+0032:             self.query, self.test_batch, shuffle=False, num_workers=self.num_workers, drop_last=False)
+0034:             self.gallery, self.test_batch, shuffle=False, num_workers=self.num_workers, drop_last=False)
+0036:     def get_train_loader(self):
+0037:         self.train_rgb.load_mode = 'train'
+0038:         self.train_ir.load_mode = 'train'
+0039:         sampler = RegDB_Sampler(self.args, self.train_rgb.label, self.train_ir.label)
+0040:         self.train_rgb.sampler_idx = sampler.rgb_index
+0041:         self.train_ir.sampler_idx = sampler.ir_index
+0042:         train_rgb_loader = data.DataLoader(self.train_rgb, batch_size=self.batch_size,\
+0044:         train_ir_loader = data.DataLoader(self.train_ir, batch_size=self.batch_size,\
+0046:         return train_rgb_loader, train_ir_loader
+0049:         self.train_rgb.load_mode = 'test'
+0050:         self.train_ir.load_mode = 'test'
+0051:         normal_rgb_loader = data.DataLoader(self.train_rgb, batch_size=self.test_batch,
+0053:         normal_ir_loader = data.DataLoader(self.train_ir, batch_size=self.test_batch,
+0057: class RegDB_train(data.Dataset):
+0058:     def __init__(self, args, data_path, trial, modal = None):
+0059:         self.num_classes = args.num_classes
+0060:         self.relabel = args.relabel
+0061:         self.data_path = data_path
+0067:         self.transform_test = transform_test
+0068:         self.transform_test_sa = transform_test_sa
+0070:         self.sampler_idx = None
+0073:         self.trial = trial
+0078:             train_list = self.data_path + 'idx/train_visible_{}'.format(self.trial) + '.txt'
+0080:             train_list = self.data_path + 'idx/train_thermal_{}'.format(self.trial) + '.txt'
+0083:         img_file, train_label = self._load_data(train_list)
+0084:         train_image = []
+0086:             img = Image.open(self.data_path + img_file[i])
+0089:             train_image.append(pix_array)
+0091:         train_image = np.array(train_image)
+0092:         length = len(train_label)
+0093:         train_label = np.array(train_label).reshape(length,1)
+0094:         train_idx = np.array([i for i in range(length)]).reshape(length,1)
+0095:         train_cam = np.array([0 for i in range(length)]).reshape(length,1)
+0096:         train_info = np.concatenate((train_idx,train_label,train_cam),axis=1)
+0097:         self.train_info, self.relabel_dict = self._relabel(train_info)
+0098:         self.train_image = train_image
+0099:         self.label = self.train_info[:,1]
+0101:     def _load_data(self,input_data_path):
+0102:         with open(input_data_path) as f:
+0103:             data_file_list = open(input_data_path, 'rt').read().splitlines()
+0109:     def _relabel(self,info):
+0110:         # shuffle pids to erase corresponding relationship between modalities
+0114:         pid_set = set(label)
+0115:         random_pid = list(range(len(pid_set)))
+0116:         random.shuffle(random_pid)
+0117:         pid2label = {pid:idx for idx, pid in enumerate(pid_set)}
+0118:         pid2random_label = {pid:idx for idx, pid in enumerate(random_pid)}
+0120:             labeled_id = pid2label[label[i]]
+0122:             if self.relabel:
+0123:                 info[:,1][i]= pid2random_label[labeled_id]
+0126:         return info, pid2random_label
+0129:         return len(self.train_image)
+0132:         if self.load_mode == 'train': # get item for train
+0133:             idx = self.sampler_idx[index] # sampler index
+0134:             info = self.train_info[idx]
+0135:             img = self.train_image[idx]
+0149:                 ori_img = self.transform_test(self.train_image[index])
+0152:                 ori_img = self.transform_test(self.train_image[index])
+0154:             info = self.train_info[index]
+0157: class RegDB_test(data.Dataset):
+0158:     def __init__(self, args, data_path, mode,trial):
+0159:         self.data_path = data_path
+0163:         self.transform = transform_test
+0164:         test_img_file, test_label, test_cam = self._process_test_regdb(trial,mode)
+0165:         test_image = []
+0166:         for i in range(len(test_img_file)):
+0167:             img = Image.open(test_img_file[i])
+0173:             test_image.append(pix_array)
+0174:         test_image = np.array(test_image)
+0176:         self.test_image = test_image
+0177:         self.test_label = test_label
+0178:         self.test_cam = test_cam
+0181:         return len(self.test_label)
+0184:         return self.transform(self.test_image[index]), self.test_label[index]
+0186:     def _process_test_regdb(self,trial,mode):
+0188:             file_path = os.path.join(self.data_path, 'idx/test_visible_{}'.format(trial) + '.txt')
+0190:             file_path = os.path.join(self.data_path, 'idx/test_thermal_{}'.format(trial) + '.txt')
+0195:             file_image = [self.data_path + '/' + s.split(' ')[0] for s in data_file_list]
+0200: class RegDB_Sampler(data.Sampler):
+0206:         self.num_classes = args.num_classes
+0207:         self.batch_pidnum = args.batch_pidnum
+0208:         self.pid_numsample = args.pid_numsample
+0210:         self.rgb_dict = {k:[] for k in range(self.num_classes)}
+0211:         self.ir_dict  = {k:[] for k in range(self.num_classes)}
+0224:         batch_num = int(1+self.len/(self.batch_pidnum*self.pid_numsample))
+0226:             selected_id = random.sample(list(range(self.num_classes)),self.batch_pidnum)
+0228:                 if min(len(self.rgb_dict[each_id]),len(self.ir_dict[each_id])) < self.pid_numsample:
+0229:                     selected_rgb = random.choices(self.rgb_dict[each_id],k=self.pid_numsample)
+0230:                     selected_ir = random.choices(self.ir_dict[each_id],k=self.pid_numsample)
+0232:                     selected_rgb = random.sample(self.rgb_dict[each_id],self.pid_numsample)
+0233:                     selected_ir = random.sample(self.ir_dict[each_id],self.pid_numsample)
+
+================================================================================
+WSL_ReID/datasets/sysu.py
+================================================================================
+0007: class SYSU:
+0010:         self.path = os.path.join(args.data_path, "SYSU-MM01/")
+0012:         self.pid_numsample = args.pid_numsample
+0013:         self.batch_pidnum = args.batch_pidnum
+0014:         self.batch_size = self.pid_numsample*self.batch_pidnum
+0015:         self.test_batch = args.test_batch
+0017:         self.train_rgb = SYSU_train(args, self.path, modal ='rgb')
+0018:         self.train_ir = SYSU_train(args, self.path, modal ='ir')
+0020:         self.rgb_relabel_dict = self.train_rgb.relabel_dict
+0021:         self.ir_relabel_dict = self.train_ir.relabel_dict
+0023:         self.query = SYSU_test(args, self.path, mode ="query")
+0028:             gallery = SYSU_test(args, self.path, mode = "gallery", trial=i)
+0035:     def get_train_loader(self):
+0036:         self.train_rgb.load_mode = 'train'
+0037:         self.train_ir.load_mode = 'train'
+0038:         sampler = SYSU_Sampler(self.args, self.train_rgb.label, self.train_ir.label)
+0039:         self.train_rgb.sampler_idx = sampler.rgb_index
+0040:         self.train_ir.sampler_idx = sampler.ir_index
+0041:         train_rgb_loader = data.DataLoader(self.train_rgb, batch_size=self.batch_size,\
+0043:         train_ir_loader = data.DataLoader(self.train_ir, batch_size=self.batch_size,\
+0045:         return train_rgb_loader, train_ir_loader
+0048:         self.train_rgb.load_mode = 'test'
+0049:         self.train_ir.load_mode = 'test'
+0050:         normal_rgb_loader = data.DataLoader(self.train_rgb, batch_size=self.test_batch,
+0052:         normal_ir_loader = data.DataLoader(self.train_ir, batch_size=self.test_batch,
+0058:             self.query, self.test_batch, shuffle=False, num_workers=self.num_workers, drop_last=False)
+0064:             self.gall_info.append((self.gallery_list[i].test_label, self.gallery_list[i].test_cam))
+0066:                 self.gallery_list[i], self.test_batch, shuffle=False, num_workers=self.num_workers, drop_last=False)
+0069: class SYSU_train(data.Dataset):
+0070:     def __init__(self, args, data_path, modal = None):
+0071:         self.num_classes = args.num_classes
+0072:         self.relabel = args.relabel
+0073:         self.data_path = data_path
+0078:         self.transform_test = transform_test
+0080:         self.sampler_idx = None
+0086:         # info :[index, pid, camid, groudt_truth_label]
+0088:             self.train_image = np.load(self.data_path + "train_rgb_modified_img.npy")
+0089:             train_info = np.load(self.data_path + "train_rgb_info.npy")
+0091:             self.train_image = np.load(self.data_path + "train_ir_modified_img.npy")
+0092:             train_info = np.load(self.data_path + "train_ir_info.npy")
+0095:         self.train_info, self.relabel_dict = self._relabel(train_info)
+0096:         self.label = self.train_info[:,1]
+0098:     def _relabel(self,info):
+0099:         # shuffle pids to erase corresponding relationship between modalities
+0103:         pid_set = set(label)
+0104:         random_pid = list(range(len(pid_set)))
+0105:         random.shuffle(random_pid)
+0106:         pid2label = {pid:idx for idx, pid in enumerate(pid_set)}
+0107:         pid2random_label = {pid:idx for idx, pid in enumerate(random_pid)}
+0109:             labeled_id = pid2label[label[i]]
+0111:             if self.relabel:
+0112:                 info[:,1][i]= pid2random_label[labeled_id]
+0115:         return info, pid2random_label
+0118:         return len(self.train_image)
+0121:         if self.load_mode == 'train': # get item for train
+0122:             idx = self.sampler_idx[index] # sampler index
+0123:             info = self.train_info[idx]
+0124:             img = self.train_image[idx]
+0138:                 ori_img = self.transform_test(self.train_image[index])
+0141:                 ori_img = self.transform_test(self.train_image[index])
+0143:             info = self.train_info[index]
+0146: class SYSU_test(data.Dataset):
+0147:     def __init__(self, args, data_path, mode, search_mode="all", gall_mode="single",trial=0):
+0148:         self.data_path = data_path
+0152:         self.transform = transform_test
+0154:             test_img_file, test_label, test_cam = self._process_query_sysu()
+0156:             test_img_file, test_label, test_cam = self._process_gallery_sysu(trial)
+0158:         test_image = []
+0159:         for i in range(len(test_img_file)):
+0160:             img = Image.open(test_img_file[i])
+0167:             test_image.append(pix_array)
+0168:         test_image = np.array(test_image)
+0170:         self.test_image = test_image
+0171:         self.test_label = test_label
+0172:         self.test_cam = test_cam
+0175:         return len(self.test_label)
+0178:         return self.transform(self.test_image[index]), self.test_label[index]
+0186:         file_path = os.path.join(self.data_path, "exp/test_id.txt")
+0196:                 img_dir = os.path.join(self.data_path, cam, id)
+0204:             camid, pid = int(img_path[-15]), int(img_path[-13:-9])
+0206:             query_id.append(pid)
+0220:         file_path = os.path.join(self.data_path, 'exp/test_id.txt')
+0229:                 img_dir = os.path.join(self.data_path, cam, id)
+0242:                 camid, pid = int(img_path[-15]), int(img_path[-13:-9])
+0244:                 gall_id.append(pid)
+0249:                     camid, pid = int(i[-15]), int(i[-13:-9])
+0251:                     gall_id.append(pid)
+0256: class SYSU_Sampler(data.Sampler):
+0262:         self.num_classes = args.num_classes
+0263:         self.batch_pidnum = args.batch_pidnum
+0264:         self.pid_numsample = args.pid_numsample
+0266:         self.rgb_dict = {k:[] for k in range(self.num_classes)}
+0267:         self.ir_dict  = {k:[] for k in range(self.num_classes)}
+0280:         batch_num = int(1+self.len/(self.batch_pidnum*self.pid_numsample))
+0282:             selected_id = random.sample(list(range(self.num_classes)),self.batch_pidnum)
+0284:                 if min(len(self.rgb_dict[each_id]),len(self.ir_dict[each_id])) < self.pid_numsample:
+0285:                     selected_rgb = random.choices(self.rgb_dict[each_id],k=self.pid_numsample)
+0286:                     selected_ir = random.choices(self.ir_dict[each_id],k=self.pid_numsample)
+0288:                     selected_rgb = random.sample(self.rgb_dict[each_id],self.pid_numsample)
+0289:                     selected_ir = random.sample(self.ir_dict[each_id],self.pid_numsample)
+
+================================================================================
+WSL_ReID/datasets/llcm.py
+================================================================================
+0009: class LLCM:
+0012:         self.test_mode = args.test_mode
+0014:         self.path = os.path.join(args.data_path, "LLCM/")
+0016:         self.pid_numsample = args.pid_numsample
+0017:         self.batch_pidnum = args.batch_pidnum
+0018:         self.batch_size = self.pid_numsample*self.batch_pidnum
+0019:         self.test_batch = args.test_batch
+0021:         self.train_rgb = LLCM_train(args, self.path, modal ='rgb')
+0022:         self.train_ir = LLCM_train(args, self.path, modal ='ir')
+0024:         self.rgb_relabel_dict = self.train_rgb.relabel_dict
+0025:         self.ir_relabel_dict = self.train_ir.relabel_dict
+0028:         if self.test_mode == 'v2t':
+0029:             self.query = LLCM_test(args, self.path, 'rgb')    
+0031:                 gallery = LLCM_test(args, self.path, 'ir',trial = i)
+0033:         elif self.test_mode == 't2v':
+0034:             self.query = LLCM_test(args, self.path, 'ir')
+0036:                 gallery = LLCM_test(args, self.path, 'rgb',trial = i) 
+0043:     def get_train_loader(self):
+0044:         self.train_rgb.load_mode = 'train'
+0045:         self.train_ir.load_mode = 'train'
+0046:         sampler = LLCM_Sampler(self.args, self.train_rgb.label, self.train_ir.label)
+0047:         self.train_rgb.sampler_idx = sampler.rgb_index
+0048:         self.train_ir.sampler_idx = sampler.ir_index
+0049:         train_rgb_loader = data.DataLoader(self.train_rgb, batch_size=self.batch_size,\
+0051:         train_ir_loader = data.DataLoader(self.train_ir, batch_size=self.batch_size,\
+0053:         return train_rgb_loader, train_ir_loader
+0056:         self.train_rgb.load_mode = 'test'
+0057:         self.train_ir.load_mode = 'test'
+0058:         normal_rgb_loader = data.DataLoader(self.train_rgb, batch_size=self.test_batch,
+0060:         normal_ir_loader = data.DataLoader(self.train_ir, batch_size=self.test_batch,
+0066:             self.query, self.test_batch, shuffle=False, num_workers=self.num_workers, drop_last=False)
+0072:             self.gall_info.append((self.gallery_list[i].test_label, self.gallery_list[i].test_cam))
+0074:                 self.gallery_list[i], self.test_batch, shuffle=False, num_workers=self.num_workers, drop_last=False)
+0077: class LLCM_train(data.Dataset):
+0078:     def __init__(self, args, data_path, trial=None,  modal = None):
+0079:         self.num_classes = args.num_classes
+0080:         self.relabel = args.relabel
+0081:         self.data_path = data_path
+0086:         self.transform_test = transform_test
+0088:         self.sampler_idx = None
+0091:         self.trial = trial
+0096:             train_list = self.data_path + 'idx/train_vis.txt'
+0097:             img_file, train_label,img_camid = self._load_data(train_list)
+0099:             train_list = self.data_path + 'idx/train_nir.txt'
+0100:             img_file, train_label,img_camid = self._load_data(train_list)
+0103:         train_image = []
+0105:             img = Image.open(self.data_path + img_file[i])
+0108:             train_image.append(pix_array)
+0110:         train_image = np.array(train_image)
+0111:         length = len(train_label)
+0112:         train_label = np.array(train_label).reshape(length,1)
+0113:         train_idx = np.array([i for i in range(length)]).reshape(length,1)
+0116:         train_info = np.concatenate((train_idx,train_label,img_camid),axis=1)
+0117:         self.train_info, self.relabel_dict = self._relabel(train_info)
+0118:         self.train_image = train_image
+0119:         self.label = self.train_info[:,1]
+0121:     def _load_data(self,input_data_path):
+0122:         with open(input_data_path) as f:
+0123:             data_file_list = open(input_data_path, 'rt').read().splitlines()
+0131:     def _relabel(self,info):
+0132:         # shuffle pids to erase corresponding relationship between modalities
+0136:         pid_set = set(label)
+0137:         random_pid = list(range(len(pid_set)))
+0138:         random.shuffle(random_pid)
+0139:         pid2label = {pid:idx for idx, pid in enumerate(pid_set)}
+0140:         pid2random_label = {pid:idx for idx, pid in enumerate(random_pid)}
+0142:             labeled_id = pid2label[label[i]]
+0144:             if self.relabel:
+0145:                 info[:,1][i]= pid2random_label[labeled_id]
+0148:         return info, pid2random_label
+0151:         return len(self.train_image)
+0154:         if self.load_mode == 'train': # get item for train
+0155:             idx = self.sampler_idx[index] # sampler index
+0156:             info = self.train_info[idx]
+0157:             img = self.train_image[idx]
+0171:                 ori_img = self.transform_test(self.train_image[index])
+0174:                 ori_img = self.transform_test(self.train_image[index])
+0176:             info = self.train_info[index]
+0179: class LLCM_test(data.Dataset):
+0180:     def __init__(self, args, data_path, modal, trial=-1):
+0181:         self.data_path = data_path
+0185:         self.transform = transform_test
+0186:         test_img_file, test_label, test_cam = self._process_test_llcm(trial)
+0188:         test_image = []
+0189:         for i in range(len(test_img_file)):
+0190:             img = Image.open(test_img_file[i])
+0196:             test_image.append(pix_array)
+0197:         test_image = np.array(test_image)
+0199:         self.test_image = test_image
+0200:         self.test_label = test_label
+0201:         self.test_cam = test_cam
+0204:         return len(self.test_label)
+0207:         return self.transform(self.test_image[index]), self.test_label[index]
+0209:     def _process_test_llcm(self,seed):
+0215:             cameras = ['test_vis/cam1','test_vis/cam2',\
+0216:                        'test_vis/cam3','test_vis/cam4',\
+0217:                         'test_vis/cam5','test_vis/cam6',\
+0218:                         'test_vis/cam7','test_vis/cam8',\
+0219:                         'test_vis/cam9']
+0221:             cameras = ['test_nir/cam1','test_nir/cam2',\
+0222:                        'test_nir/cam4','test_nir/cam5',\
+0223:                         'test_nir/cam6','test_nir/cam7',\
+0224:                         'test_nir/cam8','test_nir/cam9']
+0225:         file_path = os.path.join(self.data_path,'idx/test_id.txt')
+0233:                 img_dir = os.path.join(self.data_path,cam,id)
+0240:         test_img = []
+0241:         test_id = []
+0242:         test_cam = []
+0244:             camid, pid = int(img_path.split('cam')[1][0]), int(img_path.split('cam')[1][2:6])
+0245:             test_img.append(img_path)
+0246:             test_id.append(pid)
+0247:             test_cam.append(camid)
+0248:         return test_img, np.array(test_id), np.array(test_cam)
+0250: class LLCM_Sampler(data.Sampler):
+0256:         self.num_classes = args.num_classes
+0257:         self.batch_pidnum = args.batch_pidnum
+0258:         self.pid_numsample = args.pid_numsample
+0260:         self.rgb_dict = {k:[] for k in range(self.num_classes)}
+0261:         self.ir_dict  = {k:[] for k in range(self.num_classes)}
+0274:         batch_num = int(1+self.len/(self.batch_pidnum*self.pid_numsample))
+0276:             selected_id = random.sample(list(range(self.num_classes)),self.batch_pidnum)
+0278:                 if min(len(self.rgb_dict[each_id]),len(self.ir_dict[each_id])) < self.pid_numsample:
+0279:                     selected_rgb = random.choices(self.rgb_dict[each_id],k=self.pid_numsample)
+0280:                     selected_ir = random.choices(self.ir_dict[each_id],k=self.pid_numsample)
+0282:                     selected_rgb = random.sample(self.rgb_dict[each_id],self.pid_numsample)
+0283:                     selected_ir = random.sample(self.ir_dict[each_id],self.pid_numsample)
+
+================================================================================
+WSL_ReID/wsl.py
+================================================================================
+0009: class CMA(nn.Module):
+0020:         self.T = args.temperature # softmax temperature
+0021:         self.sigma = args.sigma # momentum update factor
+0023:         self.register_buffer('vis_memory',torch.zeros(self.num_classes,2048))
+0024:         self.register_buffer('ir_memory',torch.zeros(self.num_classes,2048))
+0029:     # vis: vis sample(v2i scores or vis features) ir: ir sample
+0041:             self.vis_memory = self.vis_memory.to(self.device)
+0042:             self.ir_memory = self.ir_memory.to(self.device)
+0054:                     self.vis_memory[label] = rgb_selected.mean(dim=0)
+0058:                     self.ir_memory[label] = ir_selected.mean(dim=0)
+0075:             self.vis_memory[i] = (1-self.sigma)*self.vis_memory[i] + self.sigma * selected_rgb
+0079:             self.ir_memory[i] = (1-self.sigma)*self.ir_memory[i] + self.sigma * selected_ir
+0081:     def get_label(self, epoch=None):
+0088:                 v2i_dict, i2v_dict = self._get_label(dists,'dist')
+0091:                 v2i_dict, _ = self._get_label(self.vis,'rgb')
+0092:                 i2v_dict, _ = self._get_label(self.ir,'ir')
+0093:                 self.v2i = v2i_dict
+0094:                 self.i2v = i2v_dict
+0095:             return v2i_dict, i2v_dict
+0097:     def _get_label(self,dists,mode):
+0111:         elif mode=='rgb': # classify score of RGB (v2i)
+0115:         elif mode=='ir': # classify score of IR (v2i)
+0126:         v2i = OrderedDict()
+0127:         i2v = OrderedDict()
+0139:             v2i[key[0]] = key[1]
+0140:             i2v[key[1]] = key[0]
+0141:             # v2i[key[0]][key[1]] = 1
+0143:         return v2i, i2v # only v2i/i2v is used in scores mode
+0145:     def extract(self, args, model, dataset):
+0154:             rgb_features, rgb_labels, rgb_gt, r2i_cls, rgb_idx = self._extract_feature(model, rgb_loader,'rgb')
+0155:             ir_features, ir_labels, ir_gt, i2r_cls, ir_idx = self._extract_feature(model, ir_loader,'ir')
+0161:     def _extract_feature(self, model, loader, modal):
+0163:         print('extracting {} features'.format(modal))

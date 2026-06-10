@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Model checkpoints and experiment outputs
+*.pth
+*.pt
+*.ckpt
+saved_*/
+saved_pretrain_*/
+logs/
+run_logs/
+
+# Local datasets / symlinks
+VIREID_Dataset/
+datasets/
+
+# Kaggle / notebook artifacts
+*.tar.gz
+*.zip
