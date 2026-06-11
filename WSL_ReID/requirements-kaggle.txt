@@ -1,0 +1,7 @@
+# Minimal Kaggle requirements for WSL-VIReID development.
+# Do not install the original requirements.txt on Kaggle because it pins Python/Torch.
+ftfy
+regex
+setproctitle
+scikit-learn
+tqdm

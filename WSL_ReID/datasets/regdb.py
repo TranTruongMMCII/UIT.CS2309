@@ -84,7 +84,7 @@ class RegDB_train(data.Dataset):
         train_image = []
         for i in range(len(img_file)):
             img = Image.open(self.data_path + img_file[i])
-            img = img.resize((144, 288), Image.ANTIALIAS)
+            img = img.resize((144, 288), (Image.Resampling.LANCZOS if hasattr(Image, 'Resampling') else Image.LANCZOS))
             pix_array = np.array(img)
             train_image.append(pix_array)
 
@@ -166,7 +166,7 @@ class RegDB_test(data.Dataset):
         for i in range(len(test_img_file)):
             img = Image.open(test_img_file[i])
             try:
-                img = img.resize((args.img_w, args.img_h), Image.ANTIALIAS)
+                img = img.resize((args.img_w, args.img_h), (Image.Resampling.LANCZOS if hasattr(Image, 'Resampling') else Image.LANCZOS))
             except AttributeError:
                 img = img.resize((args.img_w,args.img_h), Image.LANCZOS)
             pix_array = np.array(img)

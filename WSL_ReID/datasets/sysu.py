@@ -159,7 +159,7 @@ class SYSU_test(data.Dataset):
         for i in range(len(test_img_file)):
             img = Image.open(test_img_file[i])
             try:
-                img = img.resize((args.img_w, args.img_h), Image.ANTIALIAS)
+                img = img.resize((args.img_w, args.img_h), (Image.Resampling.LANCZOS if hasattr(Image, 'Resampling') else Image.LANCZOS))
             except AttributeError:
                 img = img.resize((args.img_w,args.img_h), Image.LANCZOS)
 

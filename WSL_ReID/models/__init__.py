@@ -77,7 +77,7 @@ class Model:
     def _init_criterion(self):
         self.pid_criterion = torch.nn.CrossEntropyLoss()
         self.tri_criterion = TripletLoss_WRT()
-        self.weak_criterion = Weak_loss(method='log')
+        self.weak_criterion = Weak_loss()
 
     def set_train(self):
         self.model.train()
