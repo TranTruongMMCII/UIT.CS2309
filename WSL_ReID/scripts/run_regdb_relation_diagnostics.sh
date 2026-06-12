@@ -10,17 +10,20 @@ cd "$PROJECT_DIR"
 
 DATA_ROOT="${DATA_ROOT:-/kaggle/working/VIREID_Dataset}"
 REGDB_SOURCE="${REGDB_SOURCE:-}"
-INPUT_ROOT="${INPUT_ROOT:-/kaggle/input}"
 RUN_NAME="${RUN_NAME:-relation_diag_regdb_smoke}"
 DEVICE="${DEVICE:-0}"
+SEED="${SEED:-1}"
 
-python scripts/prepare_regdb_kaggle.py \
-  --source "$REGDB_SOURCE" \
-  --output "$DATA_ROOT" \
-  --input-root "$INPUT_ROOT"
+# Match Step 2a prepare_regdb_kaggle.py API:
+#   --data-root
+#   --regdb-source
+PREPARE_ARGS=(--data-root "$DATA_ROOT")
+if [[ -n "$REGDB_SOURCE" ]]; then
+  PREPARE_ARGS+=(--regdb-source "$REGDB_SOURCE")
+fi
+python scripts/prepare_regdb_kaggle.py "${PREPARE_ARGS[@]}"
 
-python scripts/check_kaggle_env.py \
-  --data-root "$DATA_ROOT"
+python scripts/check_kaggle_env.py --data-root "$DATA_ROOT"
 
 python main.py \
   --dataset regdb \
@@ -38,6 +41,7 @@ python main.py \
   --test-batch 32 \
   --num-workers 2 \
   --device "$DEVICE" \
+  --seed "$SEED" \
   --save-relation-stats \
   --relation-stats-every 1
 
