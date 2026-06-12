@@ -100,6 +100,6 @@ echo
 if [[ "${SAVE_RELATION_STATS}" == "1" && -d "${RELATION_STATS_DIR}" ]]; then
   python scripts/collect_relation_stats.py \
     --stats-dir "${RELATION_STATS_DIR}" \
-    --csv-output "${RELATION_STATS_DIR}/relation_stats_summary.csv"
+    --output "${RELATION_STATS_DIR}/relation_stats_summary.csv"
   echo "[UPR-CRE v0.1] relation summary: ${RELATION_STATS_DIR}/relation_stats_summary.csv"
 fi
