@@ -9,6 +9,8 @@ from collections import OrderedDict
 from wsl import CMA
 from utils import MultiItemAverageMeter, infoEntropy,pha_unwrapping
 from models import Model
+import os
+from relation_metrics import save_relation_diagnostics
 
 def train(args, model: Model, dataset, *arg):
     epoch = arg[0]
@@ -42,6 +44,26 @@ def train(args, model: Model, dataset, *arg):
             else:
                 i2r_remain_dict[i] = r
                 remain_dict[r] = i
+        
+        relation_stats_every = max(1, int(getattr(args, "relation_stats_every", 1)))
+        if getattr(args, "save_relation_stats", False) and epoch % relation_stats_every == 0:
+            relation_stats_dir = getattr(args, "relation_stats_dir", "")
+            if relation_stats_dir == "":
+                relation_stats_dir = os.path.join(args.save_path, "relation_stats")
+            try:
+                save_relation_diagnostics(
+                    stats_dir=relation_stats_dir,
+                    epoch=epoch,
+                    cma=cma,
+                    r2i_pair_dict=r2i_pair_dict,
+                    i2r_pair_dict=i2r_pair_dict,
+                    common_dict=common_dict,
+                    specific_dict=specific_dict,
+                    remain_dict=remain_dict,
+                    logger=logger,
+                )
+            except Exception as exc:
+                logger(f"[relation diagnostics] failed at epoch {epoch}: {repr(exc)}")
 
         all_rm = torch.zeros((args.num_classes,args.num_classes)).to(model.device) # all corresponding pairs
         common_rm = all_rm.clone() # common corresponding pairs
