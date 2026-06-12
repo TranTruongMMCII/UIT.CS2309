@@ -129,6 +129,25 @@ if __name__ == "__main__":
     parser.add_argument('--gall-mode', default='single',type=str,help='mutil or single shot')
     parser.add_argument('--test-mode', default='t2v',type=str,help='regdb and llcm test_mode')
     parser.add_argument('--model-path', default='default', type=str, help='load from checkpoint')
+
+    parser.add_argument(
+        "--save-relation-stats",
+        action="store_true",
+        help="save CRE relation diagnostics without changing training",
+    )
+    parser.add_argument(
+        "--relation-stats-dir",
+        default="",
+        type=str,
+        help="directory for CRE relation diagnostic JSON files",
+    )
+    parser.add_argument(
+        "--relation-stats-every",
+        default=1,
+        type=int,
+        help="save CRE relation diagnostics every N epochs",
+    )
+    
     args = parser.parse_args()
     args.save_path = '../saved_'+args.dataset+'_{}'.format(args.arch)+'/'+args.save_path
     if args.dataset =='sysu':
