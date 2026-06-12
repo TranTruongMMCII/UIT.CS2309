@@ -25,7 +25,7 @@ class CMA(nn.Module):
 
     @torch.no_grad()
     # def save(self,vis,ir,rgb_ids,ir_ids,rgb_idx,ir_idx,mode):
-    def save(self,vis,ir,rgb_ids,ir_ids,rgb_idx,ir_idx,mode, rgb_features=None, ir_features=None):
+    def save(self,vis,ir,rgb_ids,ir_ids,rgb_idx,ir_idx,mode, rgb_features=None, ir_features=None, rgb_gt=None, ir_gt=None):
     # vis: vis sample(v2i scores or vis features) ir: ir sample
         self.mode = mode
         self.not_saved = False
@@ -60,7 +60,19 @@ class CMA(nn.Module):
         vis = vis.detach().cpu().numpy()
         ir = ir.detach().cpu().numpy()
         rgb_ids, ir_ids = rgb_ids.cpu(), ir_ids.cpu()
-            
+
+        # -----------------------------
+        # Diagnostic information
+        # -----------------------------
+        self.last_rgb_score = vis
+        self.last_ir_score = ir
+
+        self.rgb_gt = rgb_gt.detach().cpu() if rgb_gt is not None else None
+        self.ir_gt = ir_gt.detach().cpu() if ir_gt is not None else None
+
+        # -----------------------------
+        # Existing fields
+        # -----------------------------
         self.vis, self.ir = vis, ir
         self.rgb_ids, self.ir_ids = rgb_ids, ir_ids
         self.rgb_idx, self.ir_idx = rgb_idx, ir_idx
@@ -90,8 +102,13 @@ class CMA(nn.Module):
             elif self.mode == 'scores':
                 v2i_dict, _ = self._get_label(self.vis,'rgb')
                 i2v_dict, _ = self._get_label(self.ir,'ir')
+
                 self.v2i = v2i_dict
                 self.i2v = i2v_dict
+
+                # diagnostic snapshots
+                self.last_v2i = v2i_dict
+                self.last_i2v = i2v_dict
             return v2i_dict, i2v_dict
     # TODO
     def _get_label(self,dists,mode):
@@ -155,8 +172,19 @@ class CMA(nn.Module):
             ir_features, ir_labels, ir_gt, i2r_cls, ir_idx = self._extract_feature(model, ir_loader,'ir')
 
         # # //match by cls and save features to memory bank
-        self.save(r2i_cls, i2r_cls, rgb_labels, ir_labels, rgb_idx,\
-                 ir_idx, 'scores', rgb_features, ir_features)
+        self.save(
+            r2i_cls,
+            i2r_cls,
+            rgb_labels,
+            ir_labels,
+            rgb_idx,
+            ir_idx,
+            'scores',
+            rgb_features,
+            ir_features,
+            rgb_gt,
+            ir_gt
+        )
         
     def _extract_feature(self, model, loader, modal):
 
