@@ -45,5 +45,5 @@ run_one "proto_only_b02" "1" "0.2" "0.0" "1"
 run_one "conf_only_g05" "1" "0.0" "0.5" "1"
 run_one "full_b02_g05" "1" "0.2" "0.5" "1"
 
-echo "[Ablation] completed."
+echo "[Ablation] completed. Relation summaries:"
 find ../saved_regdb_resnet -path "*${BASE_RUN_PREFIX}*relation_stats_summary.csv" -print || true
