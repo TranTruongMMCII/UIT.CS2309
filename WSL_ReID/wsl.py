@@ -19,6 +19,17 @@ class CMA(nn.Module):
         self.num_classes = args.num_classes
         self.T = args.temperature # softmax temperature
         self.sigma = args.sigma # momentum update factor
+        # UPR-CRE v0.1 options. Disabled by default, so the baseline behavior is unchanged.
+        self.upr_cre = getattr(args, "upr_cre", False)
+        self.upr_beta = float(getattr(args, "upr_beta", 0.2))
+        self.upr_gamma = float(getattr(args, "upr_gamma", 0.5))
+        self.upr_margin_weight = float(getattr(args, "upr_margin_weight", 1.0))
+        self.upr_warmup_epoch = int(getattr(args, "upr_warmup_epoch", 1))
+        self.current_epoch = None
+        self.last_rgb_score_raw = None
+        self.last_ir_score_raw = None
+        self.last_rgb_score_refined = None
+        self.last_ir_score_refined = None
         # memory of visible and infrared modal
         self.register_buffer('vis_memory',torch.zeros(self.num_classes,2048))
         self.register_buffer('ir_memory',torch.zeros(self.num_classes,2048))
@@ -66,6 +77,11 @@ class CMA(nn.Module):
         # -----------------------------
         self.last_rgb_score = vis
         self.last_ir_score = ir
+        
+        self.last_rgb_score_raw = vis.copy()
+        self.last_ir_score_raw = ir.copy()
+        self.last_rgb_score_refined = None
+        self.last_ir_score_refined = None
 
         self.rgb_gt = rgb_gt.detach().cpu() if rgb_gt is not None else None
         self.ir_gt = ir_gt.detach().cpu() if ir_gt is not None else None
@@ -91,6 +107,7 @@ class CMA(nn.Module):
             self.ir_memory[i] = (1-self.sigma)*self.ir_memory[i] + self.sigma * selected_ir
 
     def get_label(self, epoch=None):
+        self.current_epoch = epoch
         if self.not_saved:# pass if 
             pass
         else:
@@ -110,9 +127,95 @@ class CMA(nn.Module):
                 self.last_v2i = v2i_dict
                 self.last_i2v = i2v_dict
             return v2i_dict, i2v_dict
-    # TODO
+        
+    def _upr_enabled_for_epoch(self):
+        if not getattr(self, "upr_cre", False):
+            return False
+        if self.current_epoch is None:
+            return True
+        return int(self.current_epoch) >= int(self.upr_warmup_epoch)
+
+    def _row_confidence(self, score):
+        """Return row-level confidence from entropy and top-1/top-2 margin."""
+        eps = 1e-12
+        prob = np.asarray(score, dtype=np.float32)
+        prob = np.clip(prob, eps, 1.0)
+
+        entropy = -(prob * np.log(prob)).sum(axis=1)
+        entropy = entropy / np.log(prob.shape[1] + eps)
+        entropy = np.clip(entropy, 0.0, 1.0)
+
+        if prob.shape[1] >= 2:
+            top2 = np.partition(prob, -2, axis=1)[:, -2:]
+            margin = top2[:, 1] - top2[:, 0]
+        else:
+            margin = np.ones((prob.shape[0],), dtype=np.float32)
+        margin = np.clip(margin, 0.0, 1.0)
+
+        conf = (1.0 - entropy) + float(self.upr_margin_weight) * margin
+        return np.clip(conf, 0.0, 1.0).astype(np.float32)
+
+    def _prototype_score_for_rows(self, mode):
+        """Return prototype similarity matrix aligned with the score matrix rows."""
+        vm = self.vis_memory.detach().float().to(self.device)
+        im = self.ir_memory.detach().float().to(self.device)
+
+        # If memory is still empty, avoid injecting uninformative prototype scores.
+        if torch.sum(torch.abs(vm)).item() == 0 or torch.sum(torch.abs(im)).item() == 0:
+            return None
+
+        vm = torch.nn.functional.normalize(vm, dim=1)
+        im = torch.nn.functional.normalize(im, dim=1)
+        proto = torch.matmul(vm, im.t())
+        proto = ((proto + 1.0) * 0.5).clamp(0.0, 1.0)
+        proto = proto.detach().cpu().numpy().astype(np.float32)
+
+        if mode == "rgb":
+            # Row is a visible/RGB sample, column is an infrared identity class.
+            row_labels = self.rgb_ids.numpy().astype(np.int64)
+            return proto[row_labels, :]
+        if mode == "ir":
+            # Row is an infrared sample, column is a visible/RGB identity class.
+            row_labels = self.ir_ids.numpy().astype(np.int64)
+            return proto[:, row_labels].T
+        return None
+
+    def _apply_upr_cre_score(self, dists, mode):
+        """Refine expert score matrix before hard CRE pair selection.
+
+        This v0.1 method does not change the output format of CRE.
+        It only changes the matrix used by `_get_label` for ranking.
+        """
+        if mode not in ("rgb", "ir"):
+            return dists
+        if not self._upr_enabled_for_epoch():
+            return dists
+
+        score = np.asarray(dists, dtype=np.float32)
+        proto_score = self._prototype_score_for_rows(mode)
+        if proto_score is None or proto_score.shape != score.shape:
+            return dists
+
+        beta = float(np.clip(self.upr_beta, 0.0, 1.0))
+        gamma = float(np.clip(self.upr_gamma, 0.0, 1.0))
+
+        row_conf = self._row_confidence(score)
+        confidence_scale = (1.0 - gamma) + gamma * row_conf[:, None]
+        refined = (1.0 - beta) * score * confidence_scale + beta * proto_score
+        refined = refined.astype(np.float32)
+
+        if mode == "rgb":
+            self.last_rgb_score_refined = refined
+            self.last_rgb_score = refined
+        elif mode == "ir":
+            self.last_ir_score_refined = refined
+            self.last_ir_score = refined
+
+        return refined
+
     def _get_label(self,dists,mode):
         sample_rate = 1
+        dists = self._apply_upr_cre_score(dists, mode)
         dists_shape = dists.shape
         sorted_1d = np.argsort(dists, axis=None)[::-1]# flat to 1d and sort
         sorted_2d = np.unravel_index(sorted_1d, dists_shape)# sort index return to 2d, like ([0,1,2],[1,2,0])
