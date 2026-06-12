@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-"""Collect CRE relation diagnostic JSON files into a CSV summary."""
+"""Collect CRE relation diagnostic JSON files into a CSV summary.
 
+This version intentionally accepts both --output and --csv-output so that
+older Step 3 scripts and newer Step 4 scripts remain compatible.
+"""
 from __future__ import annotations
 
 import argparse
@@ -21,8 +24,20 @@ def get_nested(d: Dict[str, Any], path: str, default: Any = "") -> Any:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stats-dir", required=True, type=str, help="directory containing epoch_*.json files")
-    parser.add_argument("--output", default="", type=str, help="output csv path; default: stats-dir/relation_stats_summary.csv")
+    parser.add_argument(
+        "--stats-dir",
+        required=True,
+        type=str,
+        help="directory containing epoch_*.json files",
+    )
+    parser.add_argument(
+        "--output",
+        "--csv-output",
+        dest="output",
+        default="",
+        type=str,
+        help="output csv path; default: stats-dir/relation_stats_summary.csv",
+    )
     args = parser.parse_args()
 
     stats_dir = Path(args.stats_dir)
