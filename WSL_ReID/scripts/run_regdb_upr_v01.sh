@@ -53,7 +53,8 @@ python scripts/check_kaggle_env.py --data-root "${DATA_ROOT}"
 
 RELATION_STATS_DIR="../saved_regdb_resnet/${RUN_NAME}_${TRIAL}/relation_stats"
 
-CMD=(python main.py
+CMD=(
+  python main.py
   --dataset regdb
   --data-path "${DATA_ROOT}"
   --debug wsl
@@ -68,7 +69,8 @@ CMD=(python main.py
   --pid-numsample "${PID_NUMSAMPLE}"
   --test-batch "${TEST_BATCH}"
   --num-workers "${NUM_WORKERS}"
-  --device "${DEVICE}")
+  --device "${DEVICE}"
+)
 
 # MILESTONES is intentionally split by shell word splitting.
 # shellcheck disable=SC2206
@@ -76,11 +78,13 @@ MILESTONE_ARRAY=(${MILESTONES})
 CMD+=(--milestones "${MILESTONE_ARRAY[@]}")
 
 if [[ "${ENABLE_UPR_CRE}" == "1" ]]; then
-  CMD+=(--upr-cre
+  CMD+=(
+    --upr-cre
     --upr-beta "${UPR_BETA}"
     --upr-gamma "${UPR_GAMMA}"
     --upr-margin-weight "${UPR_MARGIN_WEIGHT}"
-    --upr-warmup-epoch "${UPR_WARMUP_EPOCH}")
+    --upr-warmup-epoch "${UPR_WARMUP_EPOCH}"
+  )
 fi
 
 if [[ "${SAVE_RELATION_STATS}" == "1" ]]; then
@@ -90,6 +94,7 @@ fi
 echo "[UPR-CRE v0.1] command:"
 printf ' %q' "${CMD[@]}"
 echo
+
 "${CMD[@]}"
 
 if [[ "${SAVE_RELATION_STATS}" == "1" && -d "${RELATION_STATS_DIR}" ]]; then
