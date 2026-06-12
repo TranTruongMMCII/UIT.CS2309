@@ -147,6 +147,35 @@ if __name__ == "__main__":
         type=int,
         help="save CRE relation diagnostics every N epochs",
     )
+    parser.add_argument(
+        "--upr-cre",
+        action="store_true",
+        help="enable UPR-CRE v0.1 hard relation score refinement",
+    )
+    parser.add_argument(
+        "--upr-beta",
+        default=0.2,
+        type=float,
+        help="prototype similarity weight for UPR-CRE v0.1",
+    )
+    parser.add_argument(
+        "--upr-gamma",
+        default=0.5,
+        type=float,
+        help="confidence scaling strength for UPR-CRE v0.1",
+    )
+    parser.add_argument(
+        "--upr-margin-weight",
+        default=1.0,
+        type=float,
+        help="top-1/top-2 margin contribution in UPR-CRE confidence",
+    )
+    parser.add_argument(
+        "--upr-warmup-epoch",
+        default=1,
+        type=int,
+        help="start UPR-CRE after this epoch; use 0 to enable from epoch 0",
+    )
     
     args = parser.parse_args()
     args.save_path = '../saved_'+args.dataset+'_{}'.format(args.arch)+'/'+args.save_path
