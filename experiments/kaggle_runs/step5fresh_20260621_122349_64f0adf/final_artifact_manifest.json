@@ -1,0 +1,10 @@
+{
+  "run_suffix": "step5fresh_20260621_122349_64f0adf",
+  "branch": "feature/upr-cre",
+  "commit_after_backup": "8ece3ac",
+  "phase1_run": "phase1_s5_step5fresh_20260621_122349_64f0adf",
+  "baseline_run": "baseline_p2s5_step5fresh_20260621_122349_64f0adf",
+  "upr_run": "upr_b01_g05_w2_p2s5_step5fresh_20260621_122349_64f0adf",
+  "created_at": "2026-06-21 14:06:21",
+  "note": "Small artifacts only. Checkpoint is stored as GitHub Release asset from Block 5.5."
+}

@@ -1,0 +1,3 @@
+run,best_r1_by_map,best_map,best_minp_by_map,last_r1,last_map,last_minp,last_common_accuracy,last_mutual_match_ratio,last_num_common,last_num_specific,last_num_remain
+baseline_p2s5_step5fresh_20260621_122349_64f0adf_1,0.4539,0.4459,0.3343,0.4539,0.4459,0.3343,0.6153846153846154,0.8719512195121951,143,5,37
+upr_b01_g05_w2_p2s5_step5fresh_20260621_122349_64f0adf_1,0.4578,0.4448,0.3382,0.4578,0.4448,0.3382,0.6206896551724138,0.8841463414634146,145,5,37
