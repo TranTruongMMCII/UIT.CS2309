@@ -1,0 +1,1 @@
+https://github.com/TranTruongMMCII/UIT.CS2309/releases/download/step5-step5fresh_20260621_122349_64f0adf/phase1_model_5_step5fresh_20260621_122349_64f0adf.pth

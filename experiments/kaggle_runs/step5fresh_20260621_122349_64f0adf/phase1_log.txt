@@ -1,0 +1,73 @@
+make dir ../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1/log/ successful!
+make dir ../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1/models/ successful!
+Namespace(dataset='regdb', arch='resnet', mode='train', data_path='/kaggle/working/VIREID_Dataset', save_path='../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1', lr=0.00045, weight_decay=0.0005, milestones=[8, 12], relabel=1, weak_weight=0.25, tri_weight=0.25, img_h=288, img_w=144, seed=1, num_workers=2, batch_pidnum=5, pid_numsample=4, test_batch=64, sigma=0.8, temperature=3, device=0, stage1_epoch=5, stage2_epoch=0, resume=0, debug='wsl', trial=1, search_mode='all', gall_mode='single', test_mode='t2v', model_path='default', save_relation_stats=False, relation_stats_dir='', relation_stats_every=1, upr_cre=False, upr_beta=0.2, upr_gamma=0.5, upr_margin_weight=1.0, upr_warmup_epoch=1, num_classes=206)
+building regdb dataset ...
+loading regdb dataset ...
+Downloading: "https://download.pytorch.org/models/resnet50-0676ba61.pth" to /root/.cache/torch/hub/checkpoints/resnet50-0676ba61.pth
+
+  0%|          | 0.00/97.8M [00:00<?, ?B/s]
+ 20%|██        | 19.6M/97.8M [00:00<00:00, 205MB/s]
+ 45%|████▍     | 43.6M/97.8M [00:00<00:00, 232MB/s]
+ 69%|██████▉   | 67.4M/97.8M [00:00<00:00, 240MB/s]
+ 93%|█████████▎| 91.4M/97.8M [00:00<00:00, 244MB/s]
+100%|██████████| 97.8M/97.8M [00:00<00:00, 238MB/s]
+valid model file not existed!
+from 0 epoch training
+Time: 2026-06-21 12:24:46 | start phase1 from epoch 0
+extracting rgb features
+extracting ir features
+get match labels
+Time: 2026-06-21 12:34:39 | phase 1 epoch 1; Setting: ../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1
+e_lr: 4.5e-06
+r2r_id_loss: 5.197972;  i2i_id_loss: 5.192277;  
+r2r_tri_loss: 2.156216;  i2i_tri_loss: 2.14016;  
+
+R1:0.0359;   R10:0.1204;  R20:0.1777;  mAP:0.0438;  mINP:0.0278
+                       Best_R1: 0.0359;    Best mAP: 0.0438
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+Time: 2026-06-21 12:44:44 | phase 1 epoch 2; Setting: ../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1
+e_lr: 4.9050000000000006e-05
+r2r_id_loss: 2.5817869;  i2i_id_loss: 2.5973125;  
+r2r_tri_loss: 0.03867192;  i2i_tri_loss: 0.04467894;  
+
+R1:0.1417;   R10:0.3170;  R20:0.3879;  mAP:0.1571;  mINP:0.1012
+                       Best_R1: 0.1417;    Best mAP: 0.1571
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+Time: 2026-06-21 12:54:48 | phase 1 epoch 3; Setting: ../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1
+e_lr: 9.360000000000001e-05
+r2r_id_loss: 0.31031466;  i2i_id_loss: 0.35352674;  
+r2r_tri_loss: 0.0078088143;  i2i_tri_loss: 0.010333828;  
+
+R1:0.1859;   R10:0.3500;  R20:0.4277;  mAP:0.1886;  mINP:0.1248
+                       Best_R1: 0.1859;    Best mAP: 0.1886
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+Time: 2026-06-21 13:04:52 | phase 1 epoch 4; Setting: ../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1
+e_lr: 0.00013815
+r2r_id_loss: 0.07899675;  i2i_id_loss: 0.083432585;  
+r2r_tri_loss: 0.0063133617;  i2i_tri_loss: 0.006774705;  
+
+R1:0.1898;   R10:0.3655;  R20:0.4485;  mAP:0.1937;  mINP:0.1202
+                       Best_R1: 0.1898;    Best mAP: 0.1937
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+Time: 2026-06-21 13:14:56 | phase 1 epoch 5; Setting: ../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1
+e_lr: 0.0001827
+r2r_id_loss: 0.04786827;  i2i_id_loss: 0.072704576;  
+r2r_tri_loss: 0.0055516125;  i2i_tri_loss: 0.006758364;  
+
+R1:0.1908;   R10:0.3903;  R20:0.4791;  mAP:0.2095;  mINP:0.1470
+                       Best_R1: 0.1908;    Best mAP: 0.2095
+=================================================
+make dir ../saved_pretrain_regdb_resnet_1_../saved_regdb_resnet/phase1_s5_step5fresh_20260621_122349_64f0adf_1/ successful!
+Time: 2026-06-21 13:14:56 | start phase2 from epoch 0
