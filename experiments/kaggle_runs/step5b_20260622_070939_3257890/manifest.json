@@ -1,0 +1,25 @@
+{
+  "run_id": "step5b_20260622_070939_3257890",
+  "repo": "TranTruongMMCII/UIT.CS2309",
+  "branch": "feature/upr-cre",
+  "backup_dir_in_repo": "experiments/kaggle_runs/step5b_20260622_070939_3257890",
+  "artifact_dir": "/kaggle/working/artifacts_step5b_t4x2",
+  "artifact_tar": "/kaggle/working/artifacts_step5b_t4x2.tar.gz",
+  "large_files": [
+    {
+      "source_path": "/kaggle/working/artifacts_step5b_t4x2/checkpoints/phase1_model_5.pth",
+      "name": "phase1_model_5.pth",
+      "size_mb": 94.88,
+      "sha256": "57303284b98a23b9c21c8f44fd4ac7ae13e45b71f30f490e0de5c247e1fd1c70",
+      "committed_to_git": false
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_step5b_t4x2.tar.gz",
+      "name": "artifacts_step5b_t4x2.tar.gz",
+      "size_mb": 87.96,
+      "sha256": "4236e9cd8f80a838bba9f7ca33caf3ef310f3c911f231e6b8cda606609afa682",
+      "committed_to_git": false
+    }
+  ],
+  "note": "Large files are not committed by default. Upload .pth/.tar.gz to Kaggle Dataset/Input if you need them across sessions."
+}

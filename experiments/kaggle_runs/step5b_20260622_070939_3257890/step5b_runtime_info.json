@@ -1,0 +1,11 @@
+{
+  "run_suffix": "step5b_20260622_070939_3257890",
+  "commit": "3257890",
+  "phase1_ckpt": "/kaggle/working/step5b_checkpoint/phase1_model_5.pth",
+  "run_a": "upr_b01_g00_w2_p2s5_step5b_20260622_070939_3257890",
+  "run_b": "upr_b005_g05_w2_p2s5_step5b_20260622_070939_3257890",
+  "log_a": "/kaggle/working/run_logs/upr_b01_g00_w2_p2s5_step5b_20260622_070939_3257890.log",
+  "log_b": "/kaggle/working/run_logs/upr_b005_g05_w2_p2s5_step5b_20260622_070939_3257890.log",
+  "stats_a": "../saved_regdb_resnet/upr_b01_g00_w2_p2s5_step5b_20260622_070939_3257890_1/relation_stats",
+  "stats_b": "../saved_regdb_resnet/upr_b005_g05_w2_p2s5_step5b_20260622_070939_3257890_1/relation_stats"
+}

@@ -1,0 +1,5 @@
+run,beta,gamma,warmup,best_r1,best_map,best_minp,last_common_accuracy,last_mutual_match_ratio,last_num_common
+reference_baseline_p2s5,0,0,-,0.4539,0.4459,0.3343,,,
+reference_upr_b01_g05_w2_p2s5,0.1,0.5,2,0.4578,0.4448,0.3382,,,
+upr_b01_g00_w2_p2s5_step5b_20260622_070939_3257890,0.1,0.0,2,0.4913,0.4707,0.3640,0.6133333333333333,0.9090909090909091,150
+upr_b005_g05_w2_p2s5_step5b_20260622_070939_3257890,0.05,0.5,2,0.4578,0.4491,0.3462,0.6081081081081081,0.9135802469135802,148
