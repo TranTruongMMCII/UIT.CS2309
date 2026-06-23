@@ -176,6 +176,41 @@ if __name__ == "__main__":
         type=int,
         help="start UPR-CRE after this epoch; use 0 to enable from epoch 0",
     )
+    parser.add_argument(
+        "--upr-filter",
+        action="store_true",
+        help="enable UPR-CRE v0.2 confidence filtering / relation curriculum",
+    )
+    parser.add_argument(
+        "--upr-filter-start-epoch",
+        default=2,
+        type=int,
+        help="epoch to start confidence filtering; before this, no filtering is applied",
+    )
+    parser.add_argument(
+        "--upr-filter-end-epoch",
+        default=10,
+        type=int,
+        help="epoch where filtering reaches the final keep ratio",
+    )
+    parser.add_argument(
+        "--upr-filter-start-ratio",
+        default=0.75,
+        type=float,
+        help="initial keep ratio for directional pseudo-relations",
+    )
+    parser.add_argument(
+        "--upr-filter-end-ratio",
+        default=1.0,
+        type=float,
+        help="final keep ratio for directional pseudo-relations",
+    )
+    parser.add_argument(
+        "--upr-filter-min-pairs",
+        default=40,
+        type=int,
+        help="minimum number of directional pseudo-relation pairs kept after filtering",
+    )
     
     args = parser.parse_args()
     args.save_path = '../saved_'+args.dataset+'_{}'.format(args.arch)+'/'+args.save_path

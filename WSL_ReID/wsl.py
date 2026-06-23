@@ -30,6 +30,15 @@ class CMA(nn.Module):
         self.last_ir_score_raw = None
         self.last_rgb_score_refined = None
         self.last_ir_score_refined = None
+        # UPR-CRE v0.2: confidence filtering / relation curriculum.
+        # Disabled by default, so baseline and v0.1 behavior are unchanged unless --upr-filter is set.
+        self.upr_filter = getattr(args, "upr_filter", False)
+        self.upr_filter_start_epoch = int(getattr(args, "upr_filter_start_epoch", 2))
+        self.upr_filter_end_epoch = int(getattr(args, "upr_filter_end_epoch", 10))
+        self.upr_filter_start_ratio = float(getattr(args, "upr_filter_start_ratio", 0.75))
+        self.upr_filter_end_ratio = float(getattr(args, "upr_filter_end_ratio", 1.0))
+        self.upr_filter_min_pairs = int(getattr(args, "upr_filter_min_pairs", 40))
+        self.last_upr_filter_stats = {}
         # memory of visible and infrared modal
         self.register_buffer('vis_memory',torch.zeros(self.num_classes,2048))
         self.register_buffer('ir_memory',torch.zeros(self.num_classes,2048))
@@ -213,9 +222,116 @@ class CMA(nn.Module):
 
         return refined
 
+    def _upr_filter_keep_ratio(self):
+        """Curriculum keep ratio for v0.2 relation filtering."""
+        if not getattr(self, "upr_filter", False):
+            return 1.0
+
+        if self.current_epoch is None:
+            return 1.0
+
+        epoch = int(self.current_epoch)
+        start_epoch = int(self.upr_filter_start_epoch)
+        end_epoch = int(self.upr_filter_end_epoch)
+        start_ratio = float(np.clip(self.upr_filter_start_ratio, 0.0, 1.0))
+        end_ratio = float(np.clip(self.upr_filter_end_ratio, 0.0, 1.0))
+
+        if epoch < start_epoch:
+            return 1.0
+        if end_epoch <= start_epoch:
+            return end_ratio
+        if epoch >= end_epoch:
+            return end_ratio
+
+        progress = (epoch - start_epoch) / float(end_epoch - start_epoch)
+        return float(start_ratio + progress * (end_ratio - start_ratio))
+
+    def _pair_confidence_scores(self, score_matrix, mode, mapping):
+        """Compute a confidence score for each source->target pair in a directional mapping.
+
+        The score is the mean row score over all samples belonging to the source identity.
+        This keeps the filter independent of ground-truth correspondence labels.
+        """
+        if mapping is None or len(mapping) == 0:
+            return {}
+
+        score = np.asarray(score_matrix, dtype=np.float32)
+        if mode == "rgb":
+            src_labels = self.rgb_ids.numpy().astype(np.int64)
+        elif mode == "ir":
+            src_labels = self.ir_ids.numpy().astype(np.int64)
+        else:
+            return {src: 1.0 for src in mapping.keys()}
+
+        out = {}
+        for src, tgt in mapping.items():
+            try:
+                src_i = int(src)
+                tgt_i = int(tgt)
+            except Exception:
+                out[src] = 0.0
+                continue
+
+            rows = np.where(src_labels == src_i)[0]
+            if rows.size == 0 or tgt_i < 0 or tgt_i >= score.shape[1]:
+                out[src] = 0.0
+            else:
+                out[src] = float(np.mean(score[rows, tgt_i]))
+        return out
+
+    def _apply_upr_pair_filter(self, score_matrix, mode, v2i, i2v):
+        """Filter low-confidence directional pseudo-relations after hard CRE mapping.
+
+        This is UPR-CRE v0.2. It does not change the loss function or relation type.
+        It only removes low-confidence source->target pairs before train.py constructs
+        common/specific/remain dictionaries.
+        """
+        if not getattr(self, "upr_filter", False):
+            return v2i, i2v
+
+        # Before start epoch, keep original mapping unchanged.
+        if self.current_epoch is not None and int(self.current_epoch) < int(self.upr_filter_start_epoch):
+            return v2i, i2v
+
+        if v2i is None or len(v2i) == 0:
+            return v2i, i2v
+
+        keep_ratio = self._upr_filter_keep_ratio()
+        original_n = len(v2i)
+        min_pairs = max(0, int(self.upr_filter_min_pairs))
+        keep_n = int(np.ceil(original_n * keep_ratio))
+        keep_n = max(min_pairs, keep_n)
+        keep_n = min(original_n, keep_n)
+
+        pair_conf = self._pair_confidence_scores(score_matrix, mode, v2i)
+        ranked_sources = sorted(pair_conf.keys(), key=lambda k: pair_conf[k], reverse=True)
+        keep_sources = set(ranked_sources[:keep_n])
+
+        filtered_v2i = OrderedDict()
+        for src, tgt in v2i.items():
+            if src in keep_sources:
+                filtered_v2i[src] = tgt
+
+        filtered_i2v = OrderedDict((tgt, src) for src, tgt in filtered_v2i.items())
+
+        self.last_upr_filter_stats[mode] = {
+            "epoch": None if self.current_epoch is None else int(self.current_epoch),
+            "mode": mode,
+            "enabled": True,
+            "keep_ratio": float(keep_ratio),
+            "original_pairs": int(original_n),
+            "kept_pairs": int(len(filtered_v2i)),
+            "min_pairs": int(min_pairs),
+            "mean_pair_confidence_before": float(np.mean(list(pair_conf.values()))) if pair_conf else 0.0,
+            "mean_pair_confidence_after": float(np.mean([pair_conf[k] for k in keep_sources])) if keep_sources else 0.0,
+        }
+
+        return filtered_v2i, filtered_i2v
+
     def _get_label(self,dists,mode):
         sample_rate = 1
         dists = self._apply_upr_cre_score(dists, mode)
+        score_matrix = np.asarray(dists, dtype=np.float32).copy()
         dists_shape = dists.shape
         sorted_1d = np.argsort(dists, axis=None)[::-1]# flat to 1d and sort
         sorted_2d = np.unravel_index(sorted_1d, dists_shape)# sort index return to 2d, like ([0,1,2],[1,2,0])
@@ -259,7 +375,8 @@ class CMA(nn.Module):
             v2i[key[0]] = key[1]
             i2v[key[1]] = key[0]
             # v2i[key[0]][key[1]] = 1
-            
+
+        v2i, i2v = self._apply_upr_pair_filter(score_matrix, mode, v2i, i2v)
         return v2i, i2v # only v2i/i2v is used in scores mode
 
     def extract(self, args, model, dataset):
