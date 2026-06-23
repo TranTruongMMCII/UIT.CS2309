@@ -1,0 +1,18 @@
+{
+  "run_id": "step6_20260623_063755",
+  "repo": "TranTruongMMCII/UIT.CS2309",
+  "branch": "feature/upr-cre",
+  "backup_dir_in_repo": "experiments/kaggle_runs/step6_20260623_063755",
+  "artifact_dir": "/kaggle/working/artifacts_step6_p2s15",
+  "artifact_tar": "/kaggle/working/artifacts_step6_p2s15.tar.gz",
+  "large_files": [
+    {
+      "source_path": "/kaggle/working/artifacts_step6_p2s15.tar.gz",
+      "name": "artifacts_step6_p2s15.tar.gz",
+      "size_mb": 0.01,
+      "sha256": "db48e963b98476c678ae0a7715d95d84399defb071f51d3f7c2239138db5556d",
+      "committed_to_git": false
+    }
+  ],
+  "note": "Large files are not committed by default. Upload .pth/.tar.gz to Kaggle Dataset/Input if needed across sessions."
+}

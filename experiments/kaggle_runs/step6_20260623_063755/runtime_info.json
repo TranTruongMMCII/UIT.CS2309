@@ -1,0 +1,29 @@
+{
+  "run_suffix": "step6_20260623_063755",
+  "commit": "6c96804",
+  "phase1_ckpt": "/kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/phase1_model_5.pth",
+  "jobs": [
+    {
+      "tag": "baseline_p2s15",
+      "pid": 137,
+      "log_path": "/kaggle/working/run_logs/baseline_p2s15_step6_20260623_063755_6c96804.log",
+      "save_path": "baseline_p2s15_step6_20260623_063755_6c96804",
+      "relation_stats_dir": "../saved_regdb_resnet/baseline_p2s15_step6_20260623_063755_6c96804_1/relation_stats",
+      "enable_upr": false,
+      "beta": 0.0,
+      "gamma": 0.0,
+      "warmup": 0
+    },
+    {
+      "tag": "upr_b01_g00_w2_p2s15",
+      "pid": 138,
+      "log_path": "/kaggle/working/run_logs/upr_b01_g00_w2_p2s15_step6_20260623_063755_6c96804.log",
+      "save_path": "upr_b01_g00_w2_p2s15_step6_20260623_063755_6c96804",
+      "relation_stats_dir": "../saved_regdb_resnet/upr_b01_g00_w2_p2s15_step6_20260623_063755_6c96804_1/relation_stats",
+      "enable_upr": true,
+      "beta": 0.1,
+      "gamma": 0.0,
+      "warmup": 2
+    }
+  ]
+}
