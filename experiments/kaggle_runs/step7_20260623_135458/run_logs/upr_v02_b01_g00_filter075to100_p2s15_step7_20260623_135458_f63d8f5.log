@@ -1,0 +1,256 @@
+RegDB source: /kaggle/input/datasets/xqq027/reg-db/RegDB
+RegDB prepared at: /kaggle/working/VIREID_Dataset/RegDB
+Use training argument: --data-path /kaggle/working/VIREID_Dataset
+[UPR-CRE v0.2] command:
+ python main.py --dataset regdb --data-path /kaggle/working/VIREID_Dataset --debug wsl --save-path upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5 --arch resnet --trial 1 --seed 1 --model-path /kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/phase1_model_5.pth --stage1-epoch 0 --stage2-epoch 15 --lr 0.00045 --batch-pidnum 5 --pid-numsample 4 --test-batch 64 --num-workers 2 --device 0 --milestones 8 12 --upr-cre --upr-beta 0.1 --upr-gamma 0.0 --upr-margin-weight 1.0 --upr-warmup-epoch 2 --upr-filter --upr-filter-start-epoch 2 --upr-filter-end-epoch 10 --upr-filter-start-ratio 0.75 --upr-filter-end-ratio 1.0 --upr-filter-min-pairs 40 --save-relation-stats --relation-stats-dir ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1/relation_stats
+make dir ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1/log/ successful!
+make dir ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1/models/ successful!
+Namespace(dataset='regdb', arch='resnet', mode='train', data_path='/kaggle/working/VIREID_Dataset', save_path='../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1', lr=0.00045, weight_decay=0.0005, milestones=[8, 12], relabel=1, weak_weight=0.25, tri_weight=0.25, img_h=288, img_w=144, seed=1, num_workers=2, batch_pidnum=5, pid_numsample=4, test_batch=64, sigma=0.8, temperature=3, device=0, stage1_epoch=0, stage2_epoch=15, resume=0, debug='wsl', trial=1, search_mode='all', gall_mode='single', test_mode='t2v', model_path='/kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/phase1_model_5.pth', save_relation_stats=True, relation_stats_dir='../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1/relation_stats', relation_stats_every=1, upr_cre=True, upr_beta=0.1, upr_gamma=0.0, upr_margin_weight=1.0, upr_warmup_epoch=2, upr_filter=True, upr_filter_start_epoch=2, upr_filter_end_epoch=10, upr_filter_start_ratio=0.75, upr_filter_end_ratio=1.0, upr_filter_min_pairs=40, num_classes=206)
+building regdb dataset ...
+loading regdb dataset ...
+Downloading: "https://download.pytorch.org/models/resnet50-0676ba61.pth" to /root/.cache/torch/hub/checkpoints/resnet50-0676ba61.pth
+  0%|          | 0.00/97.8M [00:00<?, ?B/s] 17%|█▋        | 16.4M/97.8M [00:00<00:00, 171MB/s] 37%|███▋      | 36.2M/97.8M [00:00<00:00, 193MB/s] 57%|█████▋    | 56.1M/97.8M [00:00<00:00, 200MB/s] 78%|███████▊  | 76.0M/97.8M [00:00<00:00, 203MB/s] 98%|█████████▊| 96.1M/97.8M [00:00<00:00, 205MB/s]100%|██████████| 97.8M/97.8M [00:00<00:00, 201MB/s]
+load /kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/phase1_model_5.pth
+from 0 epoch training
+Time: 2026-06-23 13:55:57 | start phase2 from epoch 0
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=0 common=47 specific=32 remain=99 mutual=0.3310 r2i_acc=0.3732 i2r_acc=0.3468 common_acc=0.5957
+=================================================
+Epoch: 0;Time: 2026-06-23 14:05:12;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.5e-06
+r2r_id_loss: 0.054551795;  i2i_id_loss: 0.08403939;  
+tri_loss_rgb: 0.0042293505;  tri_loss_ir: 0.003840155;  
+i2r_cmo_loss: 1.8587632;  rgb_cross_loss: 4.8078365;  
+ir_cross_loss: 4.920094;  r2i_cmo_loss: 1.7914015;  
+
+R1:0.2694;   R10:0.4461;  R20:0.5311;  mAP:0.2799;  mINP:0.2103
+                   Best_R1: 0.2694;    Best mAP: 0.2799
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=1 common=59 specific=32 remain=95 mutual=0.3907 r2i_acc=0.4636 i2r_acc=0.4091 common_acc=0.6610
+=================================================
+Epoch: 1;Time: 2026-06-23 14:14:31;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.9050000000000006e-05
+r2r_id_loss: 0.33260784;  i2i_id_loss: 0.16046154;  
+tri_loss_rgb: 0.0037687162;  tri_loss_ir: 0.0083588315;  
+r2i_cmo_loss: 0.6545879;  i2r_cmo_loss: 0.6661307;  
+rgb_cross_loss: 1.2470361;  ir_cross_loss: 1.8088968;  
+
+R1:0.3374;   R10:0.4903;  R20:0.5932;  mAP:0.3359;  mINP:0.2534
+                   Best_R1: 0.3374;    Best mAP: 0.3359
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=2 common=97 specific=14 remain=28 mutual=0.8435 r2i_acc=0.5826 i2r_acc=0.5528 common_acc=0.6082
+=================================================
+Epoch: 2;Time: 2026-06-23 14:23:51;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 9.360000000000001e-05
+r2r_id_loss: 0.26540536;  i2i_id_loss: 0.17068589;  
+tri_loss_rgb: 0.0025018533;  tri_loss_ir: 0.00787525;  
+r2i_cmo_loss: 0.35055748;  i2r_cmo_loss: 0.44791278;  
+rgb_cross_loss: 0.19732493;  ir_cross_loss: 0.20785458;  
+
+R1:0.3650;   R10:0.5451;  R20:0.6485;  mAP:0.3738;  mINP:0.2846
+                   Best_R1: 0.3650;    Best mAP: 0.3738
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=3 common=107 specific=15 remain=24 mutual=0.8770 r2i_acc=0.5984 i2r_acc=0.5649 common_acc=0.5888
+=================================================
+Epoch: 3;Time: 2026-06-23 14:33:10;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 0.00013815
+r2r_id_loss: 0.33114848;  i2i_id_loss: 0.26248893;  
+tri_loss_rgb: 0.0033009131;  tri_loss_ir: 0.007231137;  
+r2i_cmo_loss: 0.3881755;  i2r_cmo_loss: 0.46400616;  
+rgb_cross_loss: 0.16992745;  ir_cross_loss: 0.13701604;  
+
+R1:0.3034;   R10:0.4568;  R20:0.5534;  mAP:0.2917;  mINP:0.2010
+                   Best_R1: 0.3650;    Best mAP: 0.3738
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=4 common=104 specific=14 remain=27 mutual=0.8595 r2i_acc=0.6116 i2r_acc=0.6154 common_acc=0.6442
+=================================================
+Epoch: 4;Time: 2026-06-23 14:42:30;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 0.0001827
+r2r_id_loss: 0.3333414;  i2i_id_loss: 0.27239004;  
+tri_loss_rgb: 0.004445497;  tri_loss_ir: 0.007284921;  
+r2i_cmo_loss: 0.43428594;  i2r_cmo_loss: 0.4992268;  
+rgb_cross_loss: 0.10854421;  ir_cross_loss: 0.1112363;  
+
+R1:0.4490;   R10:0.6442;  R20:0.7180;  mAP:0.4348;  mINP:0.3288
+                   Best_R1: 0.4490;    Best mAP: 0.4348
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=5 common=126 specific=4 remain=20 mutual=0.9692 r2i_acc=0.6308 i2r_acc=0.6370 common_acc=0.6270
+=================================================
+Epoch: 5;Time: 2026-06-23 14:51:48;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 0.00022725
+r2r_id_loss: 0.44080576;  i2i_id_loss: 0.41038612;  
+tri_loss_rgb: 0.0073345695;  tri_loss_ir: 0.00974667;  
+r2i_cmo_loss: 0.5529102;  i2r_cmo_loss: 0.5854481;  
+rgb_cross_loss: 0.15098418;  ir_cross_loss: 0.16994527;  
+
+R1:0.4335;   R10:0.6354;  R20:0.7194;  mAP:0.4253;  mINP:0.3231
+                   Best_R1: 0.4490;    Best mAP: 0.4348
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=6 common=126 specific=3 remain=23 mutual=0.9545 r2i_acc=0.6364 i2r_acc=0.6395 common_acc=0.6587
+=================================================
+Epoch: 6;Time: 2026-06-23 15:01:07;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 0.0002718
+r2r_id_loss: 0.36765605;  i2i_id_loss: 0.32002676;  
+tri_loss_rgb: 0.0073532118;  tri_loss_ir: 0.009504267;  
+r2i_cmo_loss: 0.5097738;  i2r_cmo_loss: 0.5558582;  
+rgb_cross_loss: 0.107005924;  ir_cross_loss: 0.1096326;  
+
+R1:0.4898;   R10:0.6646;  R20:0.7291;  mAP:0.4624;  mINP:0.3486
+                   Best_R1: 0.4898;    Best mAP: 0.4624
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=7 common=134 specific=9 remain=20 mutual=0.9116 r2i_acc=0.6599 i2r_acc=0.6516 common_acc=0.6791
+=================================================
+Epoch: 7;Time: 2026-06-23 15:10:24;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 0.00031634999999999996
+r2r_id_loss: 0.5100494;  i2i_id_loss: 0.47650984;  
+tri_loss_rgb: 0.0137240905;  tri_loss_ir: 0.014702621;  
+r2i_cmo_loss: 0.6300247;  i2r_cmo_loss: 0.6633905;  
+rgb_cross_loss: 0.24685816;  ir_cross_loss: 0.20876485;  
+
+R1:0.4801;   R10:0.6553;  R20:0.7320;  mAP:0.4558;  mINP:0.3431
+                   Best_R1: 0.4898;    Best mAP: 0.4624
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=8 common=134 specific=13 remain=26 mutual=0.8590 r2i_acc=0.6667 i2r_acc=0.7070 common_acc=0.7239
+=================================================
+Epoch: 8;Time: 2026-06-23 15:19:43;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 3.609e-05
+r2r_id_loss: 0.14196819;  i2i_id_loss: 0.11950395;  
+tri_loss_rgb: 0.005885334;  tri_loss_ir: 0.0071506808;  
+r2i_cmo_loss: 0.35045955;  i2r_cmo_loss: 0.3905601;  
+rgb_cross_loss: 0.063527316;  ir_cross_loss: 0.019029267;  
+
+R1:0.5277;   R10:0.7092;  R20:0.7845;  mAP:0.5047;  mINP:0.3811
+                   Best_R1: 0.5277;    Best mAP: 0.5047
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=9 common=157 specific=8 remain=14 mutual=0.9290 r2i_acc=0.7041 i2r_acc=0.6941 common_acc=0.7261
+=================================================
+Epoch: 9;Time: 2026-06-23 15:29:00;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.0545000000000006e-05
+r2r_id_loss: 0.14843786;  i2i_id_loss: 0.1164343;  
+tri_loss_rgb: 0.0049130223;  tri_loss_ir: 0.0060364907;  
+r2i_cmo_loss: 0.30754983;  i2r_cmo_loss: 0.346895;  
+rgb_cross_loss: 0.078068815;  ir_cross_loss: 0.014821295;  
+
+R1:0.5845;   R10:0.7660;  R20:0.8325;  mAP:0.5510;  mINP:0.4180
+                   Best_R1: 0.5845;    Best mAP: 0.5510
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=10 common=160 specific=7 remain=20 mutual=0.9091 r2i_acc=0.6989 i2r_acc=0.6966 common_acc=0.7312
+=================================================
+Epoch: 10;Time: 2026-06-23 15:38:18;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.5e-05
+r2r_id_loss: 0.12690605;  i2i_id_loss: 0.11068954;  
+tri_loss_rgb: 0.0041101575;  tri_loss_ir: 0.0048241224;  
+r2i_cmo_loss: 0.268714;  i2r_cmo_loss: 0.31422362;  
+rgb_cross_loss: 0.024145387;  ir_cross_loss: 0.011489736;  
+
+R1:0.5908;   R10:0.7505;  R20:0.8262;  mAP:0.5596;  mINP:0.4303
+                   Best_R1: 0.5908;    Best mAP: 0.5596
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=11 common=163 specific=4 remain=20 mutual=0.9261 r2i_acc=0.7102 i2r_acc=0.6851 common_acc=0.7362
+=================================================
+Epoch: 11;Time: 2026-06-23 15:47:36;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.5e-05
+r2r_id_loss: 0.12444912;  i2i_id_loss: 0.10620368;  
+tri_loss_rgb: 0.0038120288;  tri_loss_ir: 0.0044464967;  
+r2i_cmo_loss: 0.25404185;  i2r_cmo_loss: 0.29160973;  
+rgb_cross_loss: 0.018094191;  ir_cross_loss: 0.009725811;  
+
+R1:0.5908;   R10:0.7451;  R20:0.8141;  mAP:0.5626;  mINP:0.4399
+                   Best_R1: 0.5908;    Best mAP: 0.5626
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=12 common=166 specific=6 remain=15 mutual=0.9326 r2i_acc=0.7135 i2r_acc=0.7056 common_acc=0.7410
+=================================================
+Epoch: 12;Time: 2026-06-23 15:56:54;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.500000000000001e-06
+r2r_id_loss: 0.12199809;  i2i_id_loss: 0.10182938;  
+tri_loss_rgb: 0.0032122566;  tri_loss_ir: 0.003845129;  
+r2i_cmo_loss: 0.2474078;  i2r_cmo_loss: 0.28263363;  
+rgb_cross_loss: 0.06859871;  ir_cross_loss: 0.009411919;  
+
+R1:0.6024;   R10:0.7660;  R20:0.8515;  mAP:0.5813;  mINP:0.4506
+                   Best_R1: 0.6024;    Best mAP: 0.5813
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=13 common=169 specific=5 remain=12 mutual=0.9494 r2i_acc=0.7135 i2r_acc=0.7072 common_acc=0.7396
+=================================================
+Epoch: 13;Time: 2026-06-23 16:06:14;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.500000000000001e-06
+r2r_id_loss: 0.118329145;  i2i_id_loss: 0.10015548;  
+tri_loss_rgb: 0.003339508;  tri_loss_ir: 0.0037155864;  
+r2i_cmo_loss: 0.24619222;  i2r_cmo_loss: 0.28107312;  
+rgb_cross_loss: 0.020884862;  ir_cross_loss: 0.00836214;  
+
+R1:0.6097;   R10:0.7723;  R20:0.8515;  mAP:0.5819;  mINP:0.4508
+                   Best_R1: 0.6097;    Best mAP: 0.5819
+=================================================
+extracting rgb features
+extracting ir features
+get match labels
+[relation diagnostics] epoch=14 common=170 specific=4 remain=14 mutual=0.9551 r2i_acc=0.7135 i2r_acc=0.6957 common_acc=0.7353
+=================================================
+Epoch: 14;Time: 2026-06-23 16:15:33;Setting: ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1
+e_lr: 4.500000000000001e-06
+r2r_id_loss: 0.117175326;  i2i_id_loss: 0.101482;  
+tri_loss_rgb: 0.00330804;  tri_loss_ir: 0.003692543;  
+r2i_cmo_loss: 0.24062009;  i2r_cmo_loss: 0.2790197;  
+rgb_cross_loss: 0.023673577;  ir_cross_loss: 0.008769851;  
+
+R1:0.6044;   R10:0.7621;  R20:0.8350;  mAP:0.5763;  mINP:0.4476
+                   Best_R1: 0.6097;    Best mAP: 0.5819
+=================================================
+Wrote ../saved_regdb_resnet/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5_1/relation_stats/relation_stats_summary.csv
+{'epoch': 0, 'num_r2i_pairs': 142, 'num_i2r_pairs': 124, 'num_common': 47, 'num_specific': 32, 'num_remain': 99, 'mutual_match_ratio': 0.33098591549295775, 'r2i_pair_accuracy': 0.3732394366197183, 'i2r_pair_accuracy': 0.3467741935483871, 'common_accuracy': 0.5957446808510638, 'rgb_entropy_mean': 0.17003308491088964, 'ir_entropy_mean': 0.18085551654863424, 'rgb_margin_mean': 0.5666432981771526, 'ir_margin_mean': 0.5349934934331859, 'proto_common_mean': 0.4523059738443253, 'proto_specific_mean': 0.2990252198651433, 'proto_remain_mean': 0.3325949123110434}
+{'epoch': 1, 'num_r2i_pairs': 151, 'num_i2r_pairs': 132, 'num_common': 59, 'num_specific': 32, 'num_remain': 95, 'mutual_match_ratio': 0.39072847682119205, 'r2i_pair_accuracy': 0.46357615894039733, 'i2r_pair_accuracy': 0.4090909090909091, 'common_accuracy': 0.6610169491525424, 'rgb_entropy_mean': 0.1467521671800891, 'ir_entropy_mean': 0.16222749668469363, 'rgb_margin_mean': 0.6138254547992886, 'ir_margin_mean': 0.5886054623583754, 'proto_common_mean': 0.5431020906416036, 'proto_specific_mean': 0.3838102538138628, 'proto_remain_mean': 0.3640299270027562}
+{'epoch': 2, 'num_r2i_pairs': 115, 'num_i2r_pairs': 123, 'num_common': 97, 'num_specific': 14, 'num_remain': 28, 'mutual_match_ratio': 0.8434782608695652, 'r2i_pair_accuracy': 0.5826086956521739, 'i2r_pair_accuracy': 0.5528455284552846, 'common_accuracy': 0.6082474226804123, 'rgb_entropy_mean': 0.9771414552702214, 'ir_entropy_mean': 0.9720991631147008, 'rgb_margin_mean': 0.046563441352117034, 'ir_margin_mean': 0.05559790392349707, 'proto_common_mean': 0.7325378619518477, 'proto_specific_mean': 0.5253104737826756, 'proto_remain_mean': 0.39913223151649746}
+{'epoch': 3, 'num_r2i_pairs': 122, 'num_i2r_pairs': 131, 'num_common': 107, 'num_specific': 15, 'num_remain': 24, 'mutual_match_ratio': 0.8770491803278688, 'r2i_pair_accuracy': 0.5983606557377049, 'i2r_pair_accuracy': 0.5648854961832062, 'common_accuracy': 0.5887850467289719, 'rgb_entropy_mean': 0.9754052176330867, 'ir_entropy_mean': 0.9716576615725444, 'rgb_margin_mean': 0.05254363422556716, 'ir_margin_mean': 0.05992379251323519, 'proto_common_mean': 0.7656406570817823, 'proto_specific_mean': 0.5305580655733745, 'proto_remain_mean': 0.3962126908202966}
+{'epoch': 4, 'num_r2i_pairs': 121, 'num_i2r_pairs': 130, 'num_common': 104, 'num_specific': 14, 'num_remain': 27, 'mutual_match_ratio': 0.859504132231405, 'r2i_pair_accuracy': 0.6115702479338843, 'i2r_pair_accuracy': 0.6153846153846154, 'common_accuracy': 0.6442307692307693, 'rgb_entropy_mean': 0.9740735671780539, 'ir_entropy_mean': 0.9733775379396769, 'rgb_margin_mean': 0.05632971194394959, 'ir_margin_mean': 0.05519010897575429, 'proto_common_mean': 0.6454813423065039, 'proto_specific_mean': 0.47245228929179056, 'proto_remain_mean': 0.3866281768789998}
+{'epoch': 5, 'num_r2i_pairs': 130, 'num_i2r_pairs': 146, 'num_common': 126, 'num_specific': 4, 'num_remain': 20, 'mutual_match_ratio': 0.9692307692307692, 'r2i_pair_accuracy': 0.6307692307692307, 'i2r_pair_accuracy': 0.636986301369863, 'common_accuracy': 0.626984126984127, 'rgb_entropy_mean': 0.9728995683344145, 'ir_entropy_mean': 0.9713962733040231, 'rgb_margin_mean': 0.059586437326870696, 'ir_margin_mean': 0.06226996395457453, 'proto_common_mean': 0.6872391733858321, 'proto_specific_mean': 0.41214485466480255, 'proto_remain_mean': 0.39859323352575304}
+{'epoch': 6, 'num_r2i_pairs': 132, 'num_i2r_pairs': 147, 'num_common': 126, 'num_specific': 3, 'num_remain': 23, 'mutual_match_ratio': 0.9545454545454546, 'r2i_pair_accuracy': 0.6363636363636364, 'i2r_pair_accuracy': 0.6394557823129252, 'common_accuracy': 0.6587301587301587, 'rgb_entropy_mean': 0.971523246175449, 'ir_entropy_mean': 0.971624200139043, 'rgb_margin_mean': 0.06338904569984041, 'ir_margin_mean': 0.060590346141510786, 'proto_common_mean': 0.6168950561966214, 'proto_specific_mean': 0.42049551010131836, 'proto_remain_mean': 0.3971457031110059}
+{'epoch': 7, 'num_r2i_pairs': 147, 'num_i2r_pairs': 155, 'num_common': 134, 'num_specific': 9, 'num_remain': 20, 'mutual_match_ratio': 0.9115646258503401, 'r2i_pair_accuracy': 0.6598639455782312, 'i2r_pair_accuracy': 0.6516129032258065, 'common_accuracy': 0.6791044776119403, 'rgb_entropy_mean': 0.971642398294265, 'ir_entropy_mean': 0.9715695582518399, 'rgb_margin_mean': 0.06218420447083566, 'ir_margin_mean': 0.060850439213329284, 'proto_common_mean': 0.6011960606521635, 'proto_specific_mean': 0.43379174255662495, 'proto_remain_mean': 0.38339147344231606}
+{'epoch': 8, 'num_r2i_pairs': 156, 'num_i2r_pairs': 157, 'num_common': 134, 'num_specific': 13, 'num_remain': 26, 'mutual_match_ratio': 0.8589743589743589, 'r2i_pair_accuracy': 0.6666666666666666, 'i2r_pair_accuracy': 0.7070063694267515, 'common_accuracy': 0.7238805970149254, 'rgb_entropy_mean': 0.9706712830805615, 'ir_entropy_mean': 0.9716246177309351, 'rgb_margin_mean': 0.06579337417255668, 'ir_margin_mean': 0.060702820372542765, 'proto_common_mean': 0.542931270465922, 'proto_specific_mean': 0.39895328650107753, 'proto_remain_mean': 0.39003026714691746}
+{'epoch': 9, 'num_r2i_pairs': 169, 'num_i2r_pairs': 170, 'num_common': 157, 'num_specific': 8, 'num_remain': 14, 'mutual_match_ratio': 0.9289940828402367, 'r2i_pair_accuracy': 0.7041420118343196, 'i2r_pair_accuracy': 0.6941176470588235, 'common_accuracy': 0.7261146496815286, 'rgb_entropy_mean': 0.9698089308732007, 'ir_entropy_mean': 0.9707264917551226, 'rgb_margin_mean': 0.0684742525459072, 'ir_margin_mean': 0.0641297587677437, 'proto_common_mean': 0.5771107591071706, 'proto_specific_mean': 0.36701397225260735, 'proto_remain_mean': 0.275449878935303}
+{'epoch': 10, 'num_r2i_pairs': 176, 'num_i2r_pairs': 178, 'num_common': 160, 'num_specific': 7, 'num_remain': 20, 'mutual_match_ratio': 0.9090909090909091, 'r2i_pair_accuracy': 0.6988636363636364, 'i2r_pair_accuracy': 0.6966292134831461, 'common_accuracy': 0.73125, 'rgb_entropy_mean': 0.9690894883044133, 'ir_entropy_mean': 0.9701614057605787, 'rgb_margin_mean': 0.07078436014708184, 'ir_margin_mean': 0.06650016613388776, 'proto_common_mean': 0.5986171755939722, 'proto_specific_mean': 0.479447494660105, 'proto_remain_mean': 0.2923183798789978}
+{'epoch': 11, 'num_r2i_pairs': 176, 'num_i2r_pairs': 181, 'num_common': 163, 'num_specific': 4, 'num_remain': 20, 'mutual_match_ratio': 0.9261363636363636, 'r2i_pair_accuracy': 0.7102272727272727, 'i2r_pair_accuracy': 0.6850828729281768, 'common_accuracy': 0.7361963190184049, 'rgb_entropy_mean': 0.9685260317633748, 'ir_entropy_mean': 0.9698298242357859, 'rgb_margin_mean': 0.0728764229523967, 'ir_margin_mean': 0.06770841047653164, 'proto_common_mean': 0.5965031992438381, 'proto_specific_mean': 0.3625655770301819, 'proto_remain_mean': 0.29284228328615425}
+{'epoch': 12, 'num_r2i_pairs': 178, 'num_i2r_pairs': 180, 'num_common': 166, 'num_specific': 6, 'num_remain': 15, 'mutual_match_ratio': 0.9325842696629213, 'r2i_pair_accuracy': 0.7134831460674157, 'i2r_pair_accuracy': 0.7055555555555556, 'common_accuracy': 0.7409638554216867, 'rgb_entropy_mean': 0.9689580774266726, 'ir_entropy_mean': 0.9696141147996913, 'rgb_margin_mean': 0.0723351216150951, 'ir_margin_mean': 0.06932196509257772, 'proto_common_mean': 0.6048178748193994, 'proto_specific_mean': 0.29490015795454383, 'proto_remain_mean': 0.31604221860567727}
+{'epoch': 13, 'num_r2i_pairs': 178, 'num_i2r_pairs': 181, 'num_common': 169, 'num_specific': 5, 'num_remain': 12, 'mutual_match_ratio': 0.949438202247191, 'r2i_pair_accuracy': 0.7134831460674157, 'i2r_pair_accuracy': 0.7071823204419889, 'common_accuracy': 0.7396449704142012, 'rgb_entropy_mean': 0.9687017103798322, 'ir_entropy_mean': 0.9699823828246864, 'rgb_margin_mean': 0.07371645792159935, 'ir_margin_mean': 0.06853719733083222, 'proto_common_mean': 0.6075108016031028, 'proto_specific_mean': 0.39590078592300415, 'proto_remain_mean': 0.28551343859483796}
+{'epoch': 14, 'num_r2i_pairs': 178, 'num_i2r_pairs': 184, 'num_common': 170, 'num_specific': 4, 'num_remain': 14, 'mutual_match_ratio': 0.9550561797752809, 'r2i_pair_accuracy': 0.7134831460674157, 'i2r_pair_accuracy': 0.6956521739130435, 'common_accuracy': 0.7352941176470589, 'rgb_entropy_mean': 0.9682429578372777, 'ir_entropy_mean': 0.9694980542672601, 'rgb_margin_mean': 0.0744613142292483, 'ir_margin_mean': 0.06950212506482313, 'proto_common_mean': 0.6059037490802652, 'proto_specific_mean': 0.4326561465859413, 'proto_remain_mean': 0.2589650941746576}

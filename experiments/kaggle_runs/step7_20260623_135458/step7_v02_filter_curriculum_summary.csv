@@ -1,0 +1,5 @@
+run,stage2_epoch,filter_start_ratio,filter_end_ratio,best_r1_by_map,best_map,best_minp,last_common_accuracy,last_mutual_match_ratio,last_num_common,last_num_specific,last_num_remain
+reference_baseline_p2s15_step6,15,,,0.5816,0.5467,0.4269,,,,,
+reference_upr_v01_b01_g00_w2_p2s15_step6,15,,,0.5607,0.5408,0.4299,,,,,
+upr_v02_b01_g00_filter075to100_p2s15,15,0.75,1.0,0.6097,0.5819,0.4508,0.7352941176470589,0.9550561797752809,170,4,14
+upr_v02_b01_g00_filter055to100_p2s15,15,0.55,1.0,0.6670,0.6234,0.4897,0.8070175438596491,0.9606741573033708,171,2,14

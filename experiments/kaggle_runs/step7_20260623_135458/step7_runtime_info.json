@@ -1,0 +1,43 @@
+{
+  "run_suffix": "step7_20260623_135458",
+  "commit": "f63d8f5",
+  "phase1_ckpt": "/kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/phase1_model_5.pth",
+  "jobs": [
+    {
+      "tag": "upr_v02_b01_g00_filter075to100_p2s15",
+      "pid": 136,
+      "save_path": "upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5",
+      "log_path": "/kaggle/working/run_logs/upr_v02_b01_g00_filter075to100_p2s15_step7_20260623_135458_f63d8f5.log",
+      "gpu": 0,
+      "filter_start_ratio": 0.75,
+      "filter_end_ratio": 1.0,
+      "filter_start_epoch": 2,
+      "filter_end_epoch": 10,
+      "filter_min_pairs": 40
+    },
+    {
+      "tag": "upr_v02_b01_g00_filter055to100_p2s15",
+      "pid": 137,
+      "save_path": "upr_v02_b01_g00_filter055to100_p2s15_step7_20260623_135458_f63d8f5",
+      "log_path": "/kaggle/working/run_logs/upr_v02_b01_g00_filter055to100_p2s15_step7_20260623_135458_f63d8f5.log",
+      "gpu": 1,
+      "filter_start_ratio": 0.55,
+      "filter_end_ratio": 1.0,
+      "filter_start_epoch": 2,
+      "filter_end_epoch": 10,
+      "filter_min_pairs": 40
+    }
+  ],
+  "references": {
+    "baseline_p2s15": {
+      "r1": 0.5816,
+      "map": 0.5467,
+      "minp": 0.4269
+    },
+    "upr_v01_p2s15": {
+      "r1": 0.5607,
+      "map": 0.5408,
+      "minp": 0.4299
+    }
+  }
+}
