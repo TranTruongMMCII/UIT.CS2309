@@ -1,0 +1,62 @@
+Namespace(dataset='regdb', arch='resnet', mode='train', data_path='/kaggle/working/VIREID_Dataset', save_path='../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_135403_3f482ac_1', lr=0.00045, weight_decay=0.0005, milestones=[8, 12], relabel=1, weak_weight=0.25, tri_weight=0.25, img_h=288, img_w=144, seed=1, num_workers=2, batch_pidnum=5, pid_numsample=4, test_batch=64, sigma=0.8, temperature=3, device=0, stage1_epoch=0, stage2_epoch=5, resume=0, debug='wsl', trial=1, search_mode='all', gall_mode='single', test_mode='t2v', model_path='/kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/phase1_model_5.pth', save_relation_stats=True, relation_stats_dir='../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_135403_3f482ac_1/relation_stats', relation_stats_every=1, upr_cre=True, upr_beta=0.1, upr_gamma=0.0, upr_margin_weight=1.0, upr_warmup_epoch=2, upr_filter=True, upr_filter_start_epoch=2, upr_filter_end_epoch=10, upr_filter_start_ratio=0.55, upr_filter_end_ratio=1.0, upr_filter_min_pairs=40, upr_soft_rel=True, upr_soft_topk=3, upr_soft_temp=0.5, upr_soft_start_epoch=2, num_classes=206)
+Time: 2026-06-24 13:55:35 | start phase2 from epoch 0
+[relation diagnostics] epoch=0 common=47 specific=32 remain=99 mutual=0.3310 r2i_acc=0.3732 i2r_acc=0.3468 common_acc=0.5957
+=================================================
+Epoch: 0;Time: 2026-06-24 14:05:08;Setting: ../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_135403_3f482ac_1
+e_lr: 4.5e-06
+r2r_id_loss: 0.054551795;  i2i_id_loss: 0.08403939;  
+tri_loss_rgb: 0.0042293505;  tri_loss_ir: 0.003840155;  
+i2r_cmo_loss: 1.8587632;  rgb_cross_loss: 4.8078365;  
+ir_cross_loss: 4.920094;  r2i_cmo_loss: 1.7914015;  
+
+R1:0.2694;   R10:0.4461;  R20:0.5311;  mAP:0.2799;  mINP:0.2103
+                   Best_R1: 0.2694;    Best mAP: 0.2799
+=================================================
+[relation diagnostics] epoch=1 common=59 specific=32 remain=95 mutual=0.3907 r2i_acc=0.4636 i2r_acc=0.4091 common_acc=0.6610
+=================================================
+Epoch: 1;Time: 2026-06-24 14:14:21;Setting: ../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_135403_3f482ac_1
+e_lr: 4.9050000000000006e-05
+r2r_id_loss: 0.33260784;  i2i_id_loss: 0.16046154;  
+tri_loss_rgb: 0.0037687162;  tri_loss_ir: 0.0083588315;  
+r2i_cmo_loss: 0.6545879;  i2r_cmo_loss: 0.6661307;  
+rgb_cross_loss: 1.2470361;  ir_cross_loss: 1.8088968;  
+
+R1:0.3374;   R10:0.4903;  R20:0.5932;  mAP:0.3359;  mINP:0.2534
+                   Best_R1: 0.3374;    Best mAP: 0.3359
+=================================================
+[relation diagnostics] epoch=2 common=70 specific=21 remain=14 mutual=0.8235 r2i_acc=0.5765 i2r_acc=0.6556 common_acc=0.6857
+=================================================
+Epoch: 2;Time: 2026-06-24 14:23:36;Setting: ../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_135403_3f482ac_1
+e_lr: 9.360000000000001e-05
+r2r_id_loss: 0.23120873;  i2i_id_loss: 0.13870893;  
+tri_loss_rgb: 0.0022153754;  tri_loss_ir: 0.009482702;  
+r2i_cmo_loss: 0.34101972;  i2r_cmo_loss: 0.4134153;  
+rgb_cross_loss: 0.11228248;  ir_cross_loss: 0.18076366;  
+
+R1:0.3515;   R10:0.5058;  R20:0.5966;  mAP:0.3442;  mINP:0.2494
+                   Best_R1: 0.3515;    Best mAP: 0.3442
+=================================================
+[relation diagnostics] epoch=3 common=82 specific=12 remain=15 mutual=0.8913 r2i_acc=0.5870 i2r_acc=0.6465 common_acc=0.6220
+=================================================
+Epoch: 3;Time: 2026-06-24 14:32:50;Setting: ../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_135403_3f482ac_1
+e_lr: 0.00013815
+r2r_id_loss: 0.27523533;  i2i_id_loss: 0.2192389;  
+tri_loss_rgb: 0.002686118;  tri_loss_ir: 0.0077627343;  
+i2r_cmo_loss: 0.4616293;  rgb_cross_loss: 0.08015636;  
+ir_cross_loss: 0.10944064;  r2i_cmo_loss: 0.38233024;  
+
+R1:0.3417;   R10:0.5320;  R20:0.6369;  mAP:0.3554;  mINP:0.2698
+                   Best_R1: 0.3515;    Best mAP: 0.3554
+=================================================
+[relation diagnostics] epoch=4 common=91 specific=11 remain=16 mutual=0.9381 r2i_acc=0.5876 i2r_acc=0.6250 common_acc=0.6044
+=================================================
+Epoch: 4;Time: 2026-06-24 14:42:08;Setting: ../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_135403_3f482ac_1
+e_lr: 0.0001827
+r2r_id_loss: 0.7355873;  i2i_id_loss: 0.6705465;  
+tri_loss_rgb: 0.011703071;  tri_loss_ir: 0.015955461;  
+r2i_cmo_loss: 0.6267526;  i2r_cmo_loss: 0.69374007;  
+rgb_cross_loss: 0.40175387;  ir_cross_loss: 0.41056073;  
+
+R1:0.4214;   R10:0.6209;  R20:0.6927;  mAP:0.4064;  mINP:0.3004
+                   Best_R1: 0.4214;    Best mAP: 0.4064
+=================================================
