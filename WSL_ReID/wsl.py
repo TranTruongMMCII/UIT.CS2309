@@ -39,6 +39,17 @@ class CMA(nn.Module):
         self.upr_filter_end_ratio = float(getattr(args, "upr_filter_end_ratio", 1.0))
         self.upr_filter_min_pairs = int(getattr(args, "upr_filter_min_pairs", 40))
         self.last_upr_filter_stats = {}
+        # Step 8B: soft relation matrix diagnostics.
+        # This is diagnostic-only and does not change hard CRE labels or losses.
+        self.upr_soft_rel = getattr(args, "upr_soft_rel", False)
+        self.upr_soft_topk = int(getattr(args, "upr_soft_topk", 3))
+        self.upr_soft_temp = float(getattr(args, "upr_soft_temp", 0.5))
+        self.upr_soft_start_epoch = int(getattr(args, "upr_soft_start_epoch", 2))
+        self.soft_r2i_matrix = None
+        self.soft_i2r_matrix = None
+        self.soft_r2i_valid_rows = None
+        self.soft_i2r_valid_rows = None
+        self.last_soft_relation_stats = {}
         # memory of visible and infrared modal
         self.register_buffer('vis_memory',torch.zeros(self.num_classes,2048))
         self.register_buffer('ir_memory',torch.zeros(self.num_classes,2048))
@@ -326,12 +337,96 @@ class CMA(nn.Module):
             "mean_pair_confidence_after": float(np.mean([pair_conf[k] for k in keep_sources])) if keep_sources else 0.0,
         }
 
-        return filtered_v2i, filtered_i2v
+        return filtered_v2i, 
+        
+    def _upr_soft_enabled_for_epoch(self):
+        if not getattr(self, "upr_soft_rel", False):
+            return False
+        if self.current_epoch is None:
+            return True
+        return int(self.current_epoch) >= int(self.upr_soft_start_epoch)
+
+    def _topk_softmax_np(self, matrix, topk=3, temperature=0.5):
+        score = np.asarray(matrix, dtype=np.float32)
+        out = np.zeros_like(score, dtype=np.float32)
+        if score.ndim != 2 or score.shape[0] == 0 or score.shape[1] == 0:
+            return out
+        k = int(topk)
+        if k <= 0 or k > score.shape[1]:
+            k = score.shape[1]
+        temp = max(float(temperature), 1e-6)
+        for r in range(score.shape[0]):
+            row = score[r]
+            if not np.isfinite(row).any():
+                continue
+            idx = np.argpartition(row, -k)[-k:]
+            vals = row[idx] / temp
+            vals = vals - np.max(vals)
+            expv = np.exp(vals)
+            denom = np.sum(expv)
+            if denom > 0:
+                out[r, idx] = expv / denom
+        return out
+
+    def _identity_score_matrix(self, score_matrix, mode):
+        score = np.asarray(score_matrix, dtype=np.float32)
+        out = np.zeros((self.num_classes, score.shape[1]), dtype=np.float32)
+        valid = np.zeros((self.num_classes,), dtype=bool)
+        if mode == "rgb":
+            src_labels = self.rgb_ids.numpy().astype(np.int64)
+        elif mode == "ir":
+            src_labels = self.ir_ids.numpy().astype(np.int64)
+        else:
+            return out, valid
+        for label in np.unique(src_labels):
+            label_i = int(label)
+            if label_i < 0 or label_i >= self.num_classes:
+                continue
+            rows = np.where(src_labels == label_i)[0]
+            if rows.size == 0:
+                continue
+            out[label_i, :] = np.mean(score[rows], axis=0)
+            valid[label_i] = True
+        return out, valid
+
+    def _update_soft_relation_matrix(self, score_matrix, mode):
+        """Build soft relation matrices for diagnostics only.
+
+        It does not change `v2i/i2v`, hard relation matrices, losses, or training.
+        """
+        if mode not in ("rgb", "ir"):
+            return
+        if not self._upr_soft_enabled_for_epoch():
+            return
+        id_score, valid = self._identity_score_matrix(score_matrix, mode)
+        soft = self._topk_softmax_np(
+            id_score,
+            topk=self.upr_soft_topk,
+            temperature=self.upr_soft_temp,
+        )
+        stats = {
+            "epoch": None if self.current_epoch is None else int(self.current_epoch),
+            "mode": mode,
+            "topk": int(self.upr_soft_topk),
+            "temperature": float(self.upr_soft_temp),
+            "valid_rows": int(np.sum(valid)),
+            "nonzero_entries": int(np.sum(soft > 0)),
+            "mean_row_mass": float(np.mean(np.sum(soft[valid], axis=1))) if np.any(valid) else 0.0,
+        }
+        if mode == "rgb":
+            self.soft_r2i_matrix = soft
+            self.soft_r2i_valid_rows = valid
+            self.last_soft_relation_stats["r2i"] = stats
+        elif mode == "ir":
+            self.soft_i2r_matrix = soft
+            self.soft_i2r_valid_rows = valid
+            self.last_soft_relation_stats["i2r"] = stats
 
     def _get_label(self,dists,mode):
         sample_rate = 1
         dists = self._apply_upr_cre_score(dists, mode)
         score_matrix = np.asarray(dists, dtype=np.float32).copy()
+        self._update_soft_relation_matrix(score_matrix, mode)
         dists_shape = dists.shape
         sorted_1d = np.argsort(dists, axis=None)[::-1]# flat to 1d and sort
         sorted_2d = np.unravel_index(sorted_1d, dists_shape)# sort index return to 2d, like ([0,1,2],[1,2,0])

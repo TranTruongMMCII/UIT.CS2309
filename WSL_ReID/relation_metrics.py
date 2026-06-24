@@ -18,6 +18,8 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
+from soft_relation_metrics import compute_soft_relation_diagnostics
+
 
 def _to_numpy(x: Any) -> Optional[np.ndarray]:
     """Convert tensor/list/array to numpy; return None for missing values."""
@@ -272,6 +274,11 @@ def save_relation_diagnostics(
             "specific_first_10": list(_stringify_dict_keys(specific_dict).items())[:10],
             "remain_first_10": list(_stringify_dict_keys(remain_dict).items())[:10],
         },
+        "soft_relation": compute_soft_relation_diagnostics(
+            cma,
+            rgb_label_to_gt=rgb_label_to_gt,
+            ir_label_to_gt=ir_label_to_gt,
+        ),
     }
 
     out_path = Path(stats_dir) / f"epoch_{int(epoch):03d}.json"

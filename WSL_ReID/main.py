@@ -211,6 +211,29 @@ if __name__ == "__main__":
         type=int,
         help="minimum number of directional pseudo-relation pairs kept after filtering",
     )
+    parser.add_argument(
+        "--upr-soft-rel",
+        action="store_true",
+        help="enable Step 8B soft relation matrix diagnostics without changing training loss",
+    )
+    parser.add_argument(
+        "--upr-soft-topk",
+        default=3,
+        type=int,
+        help="top-k entries kept in each soft relation row",
+    )
+    parser.add_argument(
+        "--upr-soft-temp",
+        default=0.5,
+        type=float,
+        help="temperature for top-k softmax in soft relation diagnostics",
+    )
+    parser.add_argument(
+        "--upr-soft-start-epoch",
+        default=2,
+        type=int,
+        help="start building soft relation matrices from this epoch",
+    )
     
     args = parser.parse_args()
     args.save_path = '../saved_'+args.dataset+'_{}'.format(args.arch)+'/'+args.save_path
