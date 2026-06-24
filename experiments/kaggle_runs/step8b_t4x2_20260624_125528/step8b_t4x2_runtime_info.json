@@ -1,0 +1,29 @@
+{
+  "run_suffix": "step8b_t4x2_20260624_125528",
+  "commit": "20a0cd9",
+  "phase1_ckpt": "/kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/phase1_model_5.pth",
+  "soft_topk": 3,
+  "soft_temp": 0.5,
+  "jobs": [
+    {
+      "tag": "baseline_softdiag_p2s5",
+      "gpu": 0,
+      "pid": 308,
+      "save_path": "baseline_softdiag_p2s5_step8b_t4x2_20260624_125528_20a0cd9",
+      "relation_stats_dir": "../saved_regdb_resnet/baseline_softdiag_p2s5_step8b_t4x2_20260624_125528_20a0cd9_1/relation_stats",
+      "log_path": "/kaggle/working/run_logs/baseline_softdiag_p2s5_step8b_t4x2_20260624_125528_20a0cd9.log",
+      "enable_upr": false,
+      "enable_filter": false
+    },
+    {
+      "tag": "upr_v02_softdiag_filter055_p2s5",
+      "gpu": 1,
+      "pid": 309,
+      "save_path": "upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_125528_20a0cd9",
+      "relation_stats_dir": "../saved_regdb_resnet/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_125528_20a0cd9_1/relation_stats",
+      "log_path": "/kaggle/working/run_logs/upr_v02_softdiag_filter055_p2s5_step8b_t4x2_20260624_125528_20a0cd9.log",
+      "enable_upr": true,
+      "enable_filter": true
+    }
+  ]
+}
