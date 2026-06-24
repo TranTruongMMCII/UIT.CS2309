@@ -337,7 +337,7 @@ class CMA(nn.Module):
             "mean_pair_confidence_after": float(np.mean([pair_conf[k] for k in keep_sources])) if keep_sources else 0.0,
         }
 
-        return filtered_v2i, 
+        return filtered_v2i, filtered_i2v
         
     def _upr_soft_enabled_for_epoch(self):
         if not getattr(self, "upr_soft_rel", False):
