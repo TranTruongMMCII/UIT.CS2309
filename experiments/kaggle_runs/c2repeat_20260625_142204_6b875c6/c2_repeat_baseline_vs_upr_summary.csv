@@ -1,0 +1,5 @@
+tag,save_path,enable_upr,beta,gamma,filter_start_ratio,filter_end_ratio,best_r1_by_map,best_map,best_minp,last_common_accuracy,last_mutual_match_ratio,last_num_common,last_num_specific,last_num_remain
+reference_step6_baseline_p2s15,reference,False,0.0,0.0,,,0.5816,0.5467,0.4269,,,,,
+reference_step7_upr_v02_filter055_p2s15,reference,True,0.1,0.0,0.55,1.0,0.6670,0.6234,0.4897,0.8070,0.9607,,,
+repeat_baseline_p2s15,baseline_p2s15_repeat_c2repeat_20260625_142204_6b875c6,False,0.0,0.0,,,0.5816,0.5467,0.4269,0.6432748538011696,0.9447513812154696,171,4,17
+repeat_upr_v02_filter055_p2s15,upr_v02_filter055_p2s15_repeat_c2repeat_20260625_142204_6b875c6,True,0.1,0.0,0.55,1.0,0.6670,0.6234,0.4897,0.8070175438596491,0.9606741573033708,171,2,14

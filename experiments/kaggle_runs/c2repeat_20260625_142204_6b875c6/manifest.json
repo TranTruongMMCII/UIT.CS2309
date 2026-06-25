@@ -1,0 +1,9 @@
+{
+  "run_id": "c2repeat_20260625_142204_6b875c6",
+  "repo": "TranTruongMMCII/UIT.CS2309",
+  "branch": "feature/upr-cre",
+  "backup_dir_in_repo": "experiments/kaggle_runs/c2repeat_20260625_142204_6b875c6",
+  "artifact_tar": "/kaggle/working/artifacts_c2_repeat_c2repeat_20260625_142204_6b875c6.tar.gz",
+  "large_files_committed": false,
+  "note": "Large files are not committed. Download artifact tar or upload it as Kaggle Dataset/Input if needed."
+}
