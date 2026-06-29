@@ -1,0 +1,7 @@
+source,method,setting,rank1,rank10,rank20,map,minp
+paper_main,WSVIReID,all_search,70.4,95.8,98.8,66.6,52.7
+paper_main,WSVIReID,indoor_search,76.5,97.5,99.3,80.2,76.6
+paper_ablation,B,all_search,47.8,,,47.2,
+paper_ablation,B+CMCL_no_CRE,all_search,66.7,,,62.8,
+paper_ablation,B+CRE+CMCL,all_search,68.0,,,64.6,
+paper_ablation,B+CRE+CMCL+CLAE,all_search,70.4,,,66.6,

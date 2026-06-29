@@ -1,0 +1,5 @@
+source,method,setting,run_mode,rank1_percent,rank10_percent,rank20_percent,map_percent,minp_percent,common_accuracy,mutual_match_ratio,save_path
+paper_main,WSVIReID,all_search,paper_reported,70.4,95.8,98.8,66.6,52.7,,,
+paper_main,WSVIReID,indoor_search,paper_reported,76.5,97.5,99.3,80.2,76.6,,,
+local,local_baseline_WSL,all_search,short,57.8300,91.3100,95.9100,55.2200,40.7100,0.956386292834891,0.8746594005449592,baseline_sysu_p2s15_sysu_short_sysu_short_20260629_130838_5cb2e45
+local,UPR-CRE-v02,all_search,short,60.1300,92.6900,97.0400,57.3300,42.6000,0.9633333333333334,0.8174386920980926,upr_v02_sysu_p2s15_sysu_short_sysu_short_20260629_130838_5cb2e45

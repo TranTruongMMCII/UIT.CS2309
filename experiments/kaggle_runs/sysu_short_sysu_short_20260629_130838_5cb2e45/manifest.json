@@ -1,0 +1,6 @@
+{
+  "run_id": "sysu_short_sysu_short_20260629_130838_5cb2e45",
+  "branch": "feature/upr-cre",
+  "artifact_tar": "/kaggle/working/artifacts_step9_sysu_fullpaper.tar.gz",
+  "note": "Large tar/checkpoints are not committed. Upload to Kaggle Dataset/Input if needed."
+}
