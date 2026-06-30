@@ -29,7 +29,10 @@ def main(args):
 
     if args.mode == "train":
         cma = CMA(args)
-        if args.resume or not args.model_path == 'default':
+        if getattr(args, "phase2_state_path", ""):
+            enable_phase1 = False
+            model.load_phase2_state(args.phase2_state_path)
+        elif args.resume or not args.model_path == 'default':
             enable_phase1 = False
             if 'wsl' in args.debug and not args.model_path == 'default':
                 model.resume_model(args.model_path)
@@ -72,6 +75,12 @@ def main(args):
             best_rank1 = max(cmc[0], best_rank1)
             best_mAP = max(mAP, best_mAP)
             model.save_model(current_epoch, is_best_rank)
+            if getattr(args, "save_phase2_every", 0) > 0:
+                next_epoch = current_epoch + 1
+                if (next_epoch % args.save_phase2_every == 0) or (next_epoch == args.stage2_epoch):
+                    state_path = model.save_phase2_state(next_epoch, args.phase2_state_dir)
+                    logger(f'Phase2 state saved: {state_path}')
+
             logger('=================================================\nEpoch: {};Time: {};Setting: {}'\
                    .format(current_epoch, time_now(), args.save_path))
             logger(f'e_lr: {model.scheduler_phase2.get_lr()[0]}')
@@ -233,6 +242,24 @@ if __name__ == "__main__":
         default=2,
         type=int,
         help="start building soft relation matrices from this epoch",
+    )
+    parser.add_argument(
+        "--phase2-state-path",
+        default="",
+        type=str,
+        help="resume Phase-2 from an exact training-state checkpoint saved by --save-phase2-every",
+    )
+    parser.add_argument(
+        "--save-phase2-every",
+        default=0,
+        type=int,
+        help="save exact Phase-2 state every N epochs; 0 disables periodic Phase-2 state saving",
+    )
+    parser.add_argument(
+        "--phase2-state-dir",
+        default="",
+        type=str,
+        help="directory for periodic Phase-2 state checkpoints; default: <save_path>/phase2_states",
     )
     
     args = parser.parse_args()

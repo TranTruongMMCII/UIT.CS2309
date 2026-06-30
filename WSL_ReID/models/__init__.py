@@ -108,7 +108,62 @@ class Model:
                                'classifier2': self.classifier2.state_dict(),
                                'classifier3': self.classifier3.state_dict()}
             
-            torch.save(all_state_dict, model_file_path)        
+            torch.save(all_state_dict, model_file_path) 
+
+    def save_phase2_state(self, next_epoch, state_dir=""):
+        """
+        Save a Phase-2 training-state checkpoint.
+
+        `next_epoch` is the next epoch to run when resuming. For example,
+        after finishing current_epoch=29, save with next_epoch=30.
+        """
+        if state_dir is None or state_dir == "":
+            state_dir = os.path.join(self.args.save_path, "phase2_states")
+        os.makedirs(state_dir, exist_ok=True)
+
+        state_path = os.path.join(state_dir, f"phase2_state_{int(next_epoch)}.pth")
+        all_state_dict = {
+            "phase2_next_epoch": int(next_epoch),
+            "backbone": self.model.state_dict(),
+            "classifier1": self.classifier1.state_dict(),
+            "classifier2": self.classifier2.state_dict(),
+            "classifier3": self.classifier3.state_dict(),
+            "optimizer_phase2": self.optimizer_phase2.state_dict(),
+            "scheduler_phase2": self.scheduler_phase2.state_dict(),
+            "args": vars(self.args),
+        }
+        torch.save(all_state_dict, state_path)
+        return state_path
+
+    def load_phase2_state(self, state_path):
+        """
+        Load a Phase-2 training-state checkpoint and set `resume_epoch`.
+        This is intended for segmented Phase-2 training.
+        """
+        loaded_dict = torch.load(state_path, map_location=self.device)
+        self.model.load_state_dict(loaded_dict["backbone"], strict=False)
+        self.classifier1.load_state_dict(loaded_dict["classifier1"], strict=False)
+        self.classifier2.load_state_dict(loaded_dict["classifier2"], strict=False)
+        try:
+            self.classifier3.load_state_dict(loaded_dict["classifier3"], strict=False)
+        except Exception:
+            pass
+
+        if "optimizer_phase2" in loaded_dict:
+            try:
+                self.optimizer_phase2.load_state_dict(loaded_dict["optimizer_phase2"])
+            except Exception as exc:
+                print(f"warning: failed to load optimizer_phase2 state: {exc}")
+
+        if "scheduler_phase2" in loaded_dict:
+            try:
+                self.scheduler_phase2.load_state_dict(loaded_dict["scheduler_phase2"])
+            except Exception as exc:
+                print(f"warning: failed to load scheduler_phase2 state: {exc}")
+
+        self.resume_epoch = int(loaded_dict.get("phase2_next_epoch", 0))
+        print(f"load phase2 state {state_path}")
+        print(f"from {self.resume_epoch} epoch training")       
         
     def resume_model(self, specified_model=None):
         '''
