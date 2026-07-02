@@ -1,0 +1,74 @@
+{
+  "run_id": "sysu_seg_20260702_012029",
+  "branch": "feature/upr-cre",
+  "artifact_tar": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029.tar.gz",
+  "large_files": [
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029.tar.gz",
+      "name": "artifacts_sysu_segment_sysu_seg_20260702_012029.tar.gz",
+      "size_mb": 2569.59,
+      "sha256": "69285bc9fc1477c69e9decf149063a982f4f14d5a9cd96e0656f0698ebf7a112"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/baseline_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_10.pth",
+      "name": "phase2_state_10.pth",
+      "size_mb": 297.45,
+      "sha256": "9421f56f47003f35b5cc828536b3a73713784b0caac71a67e340c6111ebbe3ef"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/baseline_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_5.pth",
+      "name": "phase2_state_5.pth",
+      "size_mb": 297.45,
+      "sha256": "5a5635af910153137113f99c0101ac4f165ac6d68c77cc0c330bb289a82b5928"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/baseline_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_25.pth",
+      "name": "phase2_state_25.pth",
+      "size_mb": 297.45,
+      "sha256": "4cc80dedefe71cb0a838eee8f30417b025db0caace0ec7a36e64a4cf952c38da"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/baseline_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_15.pth",
+      "name": "phase2_state_15.pth",
+      "size_mb": 297.45,
+      "sha256": "910e7af50848c7d68684a59dc8c8fb4fbfdc6639b564902f97388c7103fd6bef"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/baseline_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_20.pth",
+      "name": "phase2_state_20.pth",
+      "size_mb": 297.45,
+      "sha256": "8368d6e6f512e4d79fea660e5589738f1e9e516d37bb0d8ef7a2e17ccf7073b1"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_10.pth",
+      "name": "phase2_state_10.pth",
+      "size_mb": 297.45,
+      "sha256": "91cfab8ea45421f31061c2dbdc70da3a4f023a34cb0e7291f2d29ba3556faeeb"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_5.pth",
+      "name": "phase2_state_5.pth",
+      "size_mb": 297.45,
+      "sha256": "c5f750c30f90d9c52016a0ad35fc66ddd247abdb866c751309743cd61af898cb"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_25.pth",
+      "name": "phase2_state_25.pth",
+      "size_mb": 297.45,
+      "sha256": "d875122be46fc45f3ecc27d9ccdf84b4ecba93db3685931296698f55f6c7a832"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_15.pth",
+      "name": "phase2_state_15.pth",
+      "size_mb": 297.45,
+      "sha256": "60d52604905555d0a0149e203e77c5f4625f7e75d48c890ac788139fe0b8ed36"
+    },
+    {
+      "source_path": "/kaggle/working/artifacts_sysu_segment_sysu_seg_20260702_012029/phase2_states/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_state_20.pth",
+      "name": "phase2_state_20.pth",
+      "size_mb": 297.45,
+      "sha256": "1270fa03cac505f71ba1e5bb2b7cea833d527be09ee730bdff1e2d57db9d2e85"
+    }
+  ],
+  "note": "Large .pth/.tar.gz files are not committed by default. Upload artifact tar to Kaggle Dataset/Input for later segments."
+}

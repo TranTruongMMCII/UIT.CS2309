@@ -1,0 +1,288 @@
+Namespace(dataset='sysu', arch='resnet', mode='train', data_path='/kaggle/working/VIREID_Dataset', save_path='../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029', lr=0.0003, weight_decay=0.0005, milestones=[30, 70], relabel=1, weak_weight=0.25, tri_weight=0.25, img_h=288, img_w=144, seed=1, num_workers=4, batch_pidnum=8, pid_numsample=4, test_batch=128, sigma=0.8, temperature=3, device=0, stage1_epoch=0, stage2_epoch=30, resume=0, debug='wsl', trial=1, search_mode='all', gall_mode='single', test_mode='t2v', model_path='/kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/model_20.pth', save_relation_stats=True, relation_stats_dir='../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/relation_stats', relation_stats_every=5, upr_cre=True, upr_beta=0.1, upr_gamma=0.0, upr_margin_weight=1.0, upr_warmup_epoch=2, upr_filter=True, upr_filter_start_epoch=2, upr_filter_end_epoch=10, upr_filter_start_ratio=0.55, upr_filter_end_ratio=1.0, upr_filter_min_pairs=40, upr_soft_rel=False, upr_soft_topk=3, upr_soft_temp=0.5, upr_soft_start_epoch=2, phase2_state_path='', save_phase2_every=5, phase2_state_dir='../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_states', num_classes=395)
+Time: 2026-07-02 01:26:35 | start phase2 from epoch 0
+[relation diagnostics] epoch=0 common=104 specific=69 remain=167 mutual=0.3270 r2i_acc=0.5660 i2r_acc=0.5342 common_acc=0.9423
+=================================================
+Epoch: 0;Time: 2026-07-02 01:43:20;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 2.9999999999999997e-06
+r2r_id_loss: 0.14918157;  i2i_id_loss: 0.087494545;  
+tri_loss_rgb: 0.02518759;  tri_loss_ir: 0.036269322;  
+r2i_cmo_loss: 4.0063972;  i2r_cmo_loss: 2.9778895;  
+rgb_cross_loss: 5.834579;  ir_cross_loss: 5.813597;  
+
+R1:0.3565;   R10:0.7778;  R20:0.8833;  mAP:0.3550;  mINP:0.2264
+                   Best_R1: 0.3565;    Best mAP: 0.3550
+=================================================
+=================================================
+Epoch: 1;Time: 2026-07-02 02:00:11;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 3.27e-05
+r2r_id_loss: 0.31948543;  i2i_id_loss: 0.119626194;  
+tri_loss_rgb: 0.01910876;  tri_loss_ir: 0.035206;  
+r2i_cmo_loss: 2.4630668;  i2r_cmo_loss: 1.5791063;  
+rgb_cross_loss: 3.5358515;  ir_cross_loss: 3.242299;  
+
+R1:0.4413;   R10:0.8492;  R20:0.9310;  mAP:0.4578;  mINP:0.3441
+                   Best_R1: 0.4413;    Best mAP: 0.4578
+=================================================
+=================================================
+Epoch: 2;Time: 2026-07-02 02:17:03;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 6.24e-05
+r2r_id_loss: 0.3993909;  i2i_id_loss: 0.1901349;  
+tri_loss_rgb: 0.0119372485;  tri_loss_ir: 0.029668698;  
+r2i_cmo_loss: 0.8244869;  i2r_cmo_loss: 0.82152843;  
+rgb_cross_loss: 1.0130216;  ir_cross_loss: 0.72775453;  
+
+R1:0.4827;   R10:0.8794;  R20:0.9409;  mAP:0.4889;  mINP:0.3643
+                   Best_R1: 0.4827;    Best mAP: 0.4889
+=================================================
+=================================================
+Epoch: 3;Time: 2026-07-02 02:33:55;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 9.209999999999999e-05
+r2r_id_loss: 0.38490516;  i2i_id_loss: 0.22442818;  
+tri_loss_rgb: 0.011982144;  tri_loss_ir: 0.026076453;  
+r2i_cmo_loss: 0.55332744;  i2r_cmo_loss: 0.6448326;  
+rgb_cross_loss: 0.3757492;  ir_cross_loss: 0.21974842;  
+
+R1:0.5046;   R10:0.8890;  R20:0.9498;  mAP:0.5053;  mINP:0.3797
+                   Best_R1: 0.5046;    Best mAP: 0.5053
+=================================================
+Phase2 state saved: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_states/phase2_state_5.pth
+=================================================
+Epoch: 4;Time: 2026-07-02 02:50:47;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.00012179999999999999
+r2r_id_loss: 0.38102135;  i2i_id_loss: 0.2374508;  
+tri_loss_rgb: 0.013250734;  tri_loss_ir: 0.025055131;  
+r2i_cmo_loss: 0.48131323;  i2r_cmo_loss: 0.5920909;  
+rgb_cross_loss: 0.27390435;  ir_cross_loss: 0.13117258;  
+
+R1:0.5089;   R10:0.8820;  R20:0.9441;  mAP:0.5006;  mINP:0.3666
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+[relation diagnostics] epoch=5 common=195 specific=43 remain=50 mutual=0.7831 r2i_acc=0.9398 i2r_acc=0.8992 common_acc=0.9744
+=================================================
+Epoch: 5;Time: 2026-07-02 03:07:39;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0001515
+r2r_id_loss: 0.4017142;  i2i_id_loss: 0.2535736;  
+tri_loss_rgb: 0.014255289;  tri_loss_ir: 0.024921568;  
+r2i_cmo_loss: 0.4734361;  i2r_cmo_loss: 0.5712913;  
+rgb_cross_loss: 0.22988535;  ir_cross_loss: 0.10628281;  
+
+R1:0.4928;   R10:0.8869;  R20:0.9503;  mAP:0.4800;  mINP:0.3363
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 6;Time: 2026-07-02 03:24:31;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.00018119999999999999
+r2r_id_loss: 0.4155616;  i2i_id_loss: 0.27865386;  
+tri_loss_rgb: 0.016088901;  tri_loss_ir: 0.025265675;  
+r2i_cmo_loss: 0.48595425;  i2r_cmo_loss: 0.5594437;  
+rgb_cross_loss: 0.19580208;  ir_cross_loss: 0.09791813;  
+
+R1:0.4741;   R10:0.8698;  R20:0.9412;  mAP:0.4640;  mINP:0.3274
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 7;Time: 2026-07-02 03:41:23;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.00021089999999999998
+r2r_id_loss: 0.4757953;  i2i_id_loss: 0.31979996;  
+tri_loss_rgb: 0.018227834;  tri_loss_ir: 0.028058618;  
+r2i_cmo_loss: 0.5206232;  i2r_cmo_loss: 0.57867306;  
+rgb_cross_loss: 0.20683777;  ir_cross_loss: 0.11451093;  
+
+R1:0.4789;   R10:0.8688;  R20:0.9393;  mAP:0.4564;  mINP:0.3055
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 8;Time: 2026-07-02 03:58:14;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0002406
+r2r_id_loss: 0.51423615;  i2i_id_loss: 0.35152;  
+tri_loss_rgb: 0.021119164;  tri_loss_ir: 0.029785778;  
+r2i_cmo_loss: 0.55647165;  i2r_cmo_loss: 0.603975;  
+rgb_cross_loss: 0.23662643;  ir_cross_loss: 0.11603679;  
+
+R1:0.4686;   R10:0.8366;  R20:0.9165;  mAP:0.4449;  mINP:0.2998
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+Phase2 state saved: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_states/phase2_state_10.pth
+=================================================
+Epoch: 9;Time: 2026-07-02 04:15:03;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.00027029999999999996
+r2r_id_loss: 0.5494192;  i2i_id_loss: 0.38061255;  
+tri_loss_rgb: 0.024547027;  tri_loss_ir: 0.032591596;  
+r2i_cmo_loss: 0.5840428;  i2r_cmo_loss: 0.62075263;  
+rgb_cross_loss: 0.2784509;  ir_cross_loss: 0.12961599;  
+
+R1:0.4598;   R10:0.8554;  R20:0.9312;  mAP:0.4314;  mINP:0.2796
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+[relation diagnostics] epoch=10 common=276 specific=29 remain=69 mutual=0.7709 r2i_acc=0.8911 i2r_acc=0.8793 common_acc=0.9819
+=================================================
+Epoch: 10;Time: 2026-07-02 04:31:50;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.53006375;  i2i_id_loss: 0.3839885;  
+tri_loss_rgb: 0.025470573;  tri_loss_ir: 0.0318158;  
+r2i_cmo_loss: 0.5934248;  i2r_cmo_loss: 0.6169383;  
+rgb_cross_loss: 0.24050017;  ir_cross_loss: 0.13007753;  
+
+R1:0.4274;   R10:0.8143;  R20:0.9018;  mAP:0.4070;  mINP:0.2674
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 11;Time: 2026-07-02 04:48:36;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.51670736;  i2i_id_loss: 0.35580352;  
+tri_loss_rgb: 0.02514064;  tri_loss_ir: 0.03215975;  
+r2i_cmo_loss: 0.57136184;  i2r_cmo_loss: 0.6070142;  
+rgb_cross_loss: 0.21733502;  ir_cross_loss: 0.107929215;  
+
+R1:0.4848;   R10:0.8658;  R20:0.9331;  mAP:0.4576;  mINP:0.3039
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 12;Time: 2026-07-02 05:05:18;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.48741302;  i2i_id_loss: 0.33590162;  
+tri_loss_rgb: 0.024283232;  tri_loss_ir: 0.030726261;  
+r2i_cmo_loss: 0.5457314;  i2r_cmo_loss: 0.5853377;  
+rgb_cross_loss: 0.1953745;  ir_cross_loss: 0.095575415;  
+
+R1:0.4625;   R10:0.8570;  R20:0.9324;  mAP:0.4291;  mINP:0.2737
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 13;Time: 2026-07-02 05:21:59;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.48014876;  i2i_id_loss: 0.3301104;  
+tri_loss_rgb: 0.025100343;  tri_loss_ir: 0.030787444;  
+r2i_cmo_loss: 0.54800475;  i2r_cmo_loss: 0.57607275;  
+rgb_cross_loss: 0.19035612;  ir_cross_loss: 0.0901766;  
+
+R1:0.4649;   R10:0.8533;  R20:0.9296;  mAP:0.4370;  mINP:0.2877
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+Phase2 state saved: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_states/phase2_state_15.pth
+=================================================
+Epoch: 14;Time: 2026-07-02 05:38:37;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.46508697;  i2i_id_loss: 0.3312468;  
+tri_loss_rgb: 0.025166707;  tri_loss_ir: 0.029725026;  
+r2i_cmo_loss: 0.5408603;  i2r_cmo_loss: 0.5699154;  
+rgb_cross_loss: 0.19579637;  ir_cross_loss: 0.09827009;  
+
+R1:0.4649;   R10:0.8574;  R20:0.9305;  mAP:0.4357;  mINP:0.2805
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+[relation diagnostics] epoch=15 common=303 specific=30 remain=47 mutual=0.8167 r2i_acc=0.9164 i2r_acc=0.8925 common_acc=0.9637
+=================================================
+Epoch: 15;Time: 2026-07-02 05:55:12;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.44925696;  i2i_id_loss: 0.3159745;  
+tri_loss_rgb: 0.024408787;  tri_loss_ir: 0.02918469;  
+r2i_cmo_loss: 0.5177578;  i2r_cmo_loss: 0.550996;  
+rgb_cross_loss: 0.16138709;  ir_cross_loss: 0.08128898;  
+
+R1:0.4604;   R10:0.8433;  R20:0.9211;  mAP:0.4229;  mINP:0.2660
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 16;Time: 2026-07-02 06:11:46;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.4592809;  i2i_id_loss: 0.3307348;  
+tri_loss_rgb: 0.024594517;  tri_loss_ir: 0.03029234;  
+r2i_cmo_loss: 0.53221;  i2r_cmo_loss: 0.5509746;  
+rgb_cross_loss: 0.17038052;  ir_cross_loss: 0.091330074;  
+
+R1:0.4614;   R10:0.8553;  R20:0.9282;  mAP:0.4203;  mINP:0.2555
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 17;Time: 2026-07-02 06:28:20;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.4325531;  i2i_id_loss: 0.3083117;  
+tri_loss_rgb: 0.024208575;  tri_loss_ir: 0.028798522;  
+r2i_cmo_loss: 0.52232444;  i2r_cmo_loss: 0.54472464;  
+rgb_cross_loss: 0.13845237;  ir_cross_loss: 0.08285479;  
+
+R1:0.4664;   R10:0.8402;  R20:0.9170;  mAP:0.4328;  mINP:0.2787
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 18;Time: 2026-07-02 06:44:53;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.4360963;  i2i_id_loss: 0.312376;  
+tri_loss_rgb: 0.023963077;  tri_loss_ir: 0.02918365;  
+r2i_cmo_loss: 0.5174749;  i2r_cmo_loss: 0.54291844;  
+rgb_cross_loss: 0.15833884;  ir_cross_loss: 0.08338996;  
+
+R1:0.4735;   R10:0.8496;  R20:0.9206;  mAP:0.4357;  mINP:0.2790
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+Phase2 state saved: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_states/phase2_state_20.pth
+=================================================
+Epoch: 19;Time: 2026-07-02 07:01:24;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.41552997;  i2i_id_loss: 0.29274273;  
+tri_loss_rgb: 0.024046227;  tri_loss_ir: 0.02784384;  
+r2i_cmo_loss: 0.4994916;  i2r_cmo_loss: 0.5343823;  
+rgb_cross_loss: 0.1468729;  ir_cross_loss: 0.0708306;  
+
+R1:0.4792;   R10:0.8510;  R20:0.9228;  mAP:0.4433;  mINP:0.2872
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+[relation diagnostics] epoch=20 common=294 specific=37 remain=48 mutual=0.7925 r2i_acc=0.9353 i2r_acc=0.8916 common_acc=0.9694
+=================================================
+Epoch: 20;Time: 2026-07-02 07:17:52;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.44726768;  i2i_id_loss: 0.31413764;  
+tri_loss_rgb: 0.024656631;  tri_loss_ir: 0.029483298;  
+r2i_cmo_loss: 0.5126695;  i2r_cmo_loss: 0.5384598;  
+rgb_cross_loss: 0.15979183;  ir_cross_loss: 0.082838155;  
+
+R1:0.4670;   R10:0.8447;  R20:0.9233;  mAP:0.4293;  mINP:0.2718
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 21;Time: 2026-07-02 07:34:21;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.44162023;  i2i_id_loss: 0.3158225;  
+tri_loss_rgb: 0.025701342;  tri_loss_ir: 0.030087123;  
+r2i_cmo_loss: 0.5171869;  i2r_cmo_loss: 0.5413368;  
+rgb_cross_loss: 0.15651909;  ir_cross_loss: 0.0873649;  
+
+R1:0.4952;   R10:0.8656;  R20:0.9344;  mAP:0.4624;  mINP:0.3034
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 22;Time: 2026-07-02 07:50:45;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.41678628;  i2i_id_loss: 0.30154502;  
+tri_loss_rgb: 0.02431461;  tri_loss_ir: 0.028258529;  
+r2i_cmo_loss: 0.49944383;  i2r_cmo_loss: 0.52699494;  
+rgb_cross_loss: 0.1478892;  ir_cross_loss: 0.07663061;  
+
+R1:0.4886;   R10:0.8693;  R20:0.9368;  mAP:0.4576;  mINP:0.3003
+                   Best_R1: 0.5089;    Best mAP: 0.5053
+=================================================
+=================================================
+Epoch: 23;Time: 2026-07-02 08:07:09;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.40224227;  i2i_id_loss: 0.28449997;  
+tri_loss_rgb: 0.023943886;  tri_loss_ir: 0.027636642;  
+r2i_cmo_loss: 0.4936528;  i2r_cmo_loss: 0.5203556;  
+rgb_cross_loss: 0.14367032;  ir_cross_loss: 0.06663167;  
+
+R1:0.5165;   R10:0.8828;  R20:0.9447;  mAP:0.4818;  mINP:0.3248
+                   Best_R1: 0.5165;    Best mAP: 0.5053
+=================================================
+Phase2 state saved: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029/phase2_states/phase2_state_25.pth
+=================================================
+Epoch: 24;Time: 2026-07-02 08:23:32;Setting: ../saved_sysu_resnet/upr_v02_sysu_p2s30_sysu_seg_20260702_012029
+e_lr: 0.0003
+r2r_id_loss: 0.39635062;  i2i_id_loss: 0.29269472;  
+tri_loss_rgb: 0.024032395;  tri_loss_ir: 0.027561761;  
+r2i_cmo_loss: 0.49243528;  i2r_cmo_loss: 0.5117773;  
+rgb_cross_loss: 0.12744397;  ir_cross_loss: 0.07129038;  
+
+R1:0.4912;   R10:0.8673;  R20:0.9367;  mAP:0.4565;  mINP:0.2977
+                   Best_R1: 0.5165;    Best mAP: 0.5053
+=================================================
+[relation diagnostics] epoch=25 common=308 specific=40 remain=36 mutual=0.8213 r2i_acc=0.9440 i2r_acc=0.9069 common_acc=0.9740

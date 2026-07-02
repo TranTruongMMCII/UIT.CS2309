@@ -1,0 +1,16 @@
+{
+  "run_suffix": "sysu_seg_20260702_012029",
+  "segment_end_epoch": 30,
+  "save_phase2_every": 5,
+  "relation_stats_every": 5,
+  "data_root": "/kaggle/working/VIREID_Dataset",
+  "phase1_ckpt_path": "/kaggle/input/datasets/truongtranmmcii/uit-cs2309-checkpoint/model_20.pth",
+  "baseline_phase2_state_path": "",
+  "upr_phase2_state_path": "",
+  "baseline_save_path": "baseline_sysu_p2s30_sysu_seg_20260702_012029",
+  "upr_save_path": "upr_v02_sysu_p2s30_sysu_seg_20260702_012029",
+  "baseline_log": "/kaggle/working/run_logs/baseline_sysu_p2s30_sysu_seg_20260702_012029.log",
+  "upr_log": "/kaggle/working/run_logs/upr_v02_sysu_p2s30_sysu_seg_20260702_012029.log",
+  "baseline_pid_file": "/kaggle/working/pids/sysu_baseline_segment.pid",
+  "upr_pid_file": "/kaggle/working/pids/sysu_upr_segment.pid"
+}
